@@ -1,0 +1,74 @@
+#!Nsis Installer Command Script
+# @configure_input@
+# To build an installer from the script you would normally do:
+#
+#   makensis spice-guest-tools
+#
+# which will generate the output file 'spice-guest-tools-$VERSION.exe' which is a Windows
+# installer containing your program.
+
+SetCompressor lzma
+
+!include "winver.nsh"
+!include "driver-hack.nsh"
+
+Name "SPICE Guest Tools"
+OutFile "spice-guest-tools-0.0.1.exe"
+InstallDir "$PROGRAMFILES\virt-viewer-@VERSION@.exe"
+# SilentInstall silent
+
+# ShowInstDetails hide
+# ShowUninstDetails hide
+
+XPStyle on
+RequestExecutionLevel admin
+
+# Page components
+Page directory
+Page instfiles
+
+ComponentText "Select which optional components you want to install."
+
+DirText "Please select the installation folder."
+
+Section "spice-guest-tools"
+  SectionIn RO
+
+  SetOutPath "$INSTDIR"
+  File "bin/vdagent_x86/vdagent.exe"
+  File "bin/vdagent_x86/vdservice.exe"
+  File /r "drivers/"
+
+  !insertmacro InstallUpgradeDriver "$INSTDIR\drivers" "$INSTDIR/drivers/qxl/w7/x86/qxl.inf" "PCI\VEN_1b36&DEV_0100&SUBSYS_11001af4"
+
+  SetOutPath "$INSTDIR"
+  nsExec::ExecToLog 'vdservice install'
+  nsExec::ExecToLog 'net start vdservice'
+
+SectionEnd
+
+Section "Start Menu Shortcuts"
+  CreateDirectory "$SMPROGRAMS\spice-guest-tools"
+  CreateShortCut "$SMPROGRAMS\spice-guest-tools\Uninstall SPICE Guest Tools.lnk" "$INSTDIR\Uninstall-spice-guest-tools.exe" "" "$INSTDIR\Uninstall-spice-guest-tools.exe" 0
+SectionEnd
+
+Section "Desktop Icons"
+#  CreateShortCut "$DESKTOP\virt-viewer.exe.lnk" "$INSTDIR\bin\virt-viewer.exe" "" "$INSTDIR\bin\virt-viewer.exe" 0
+SectionEnd
+
+Section "Uninstall"
+  Delete /rebootok "$SMPROGRAMS\virt-viewer\Uninstall virt-viewer.lnk"
+  RMDir "$SMPROGRAMS\spice-guest-tools"
+
+  SetOutPath "$INSTDIR"
+  nsExec::ExecToLog 'net stop vdservice'
+  nsExec::ExecToLog 'vdservice uninstall'
+
+  Delete /rebootok "$INSTDIR\vdagent.exe"
+  Delete /rebootok "$INSTDIR\vdservice.exe"
+  RMDir "$INSTDIR"
+SectionEnd
+
+Section -post
+  WriteUninstaller "$INSTDIR\Uninstall virt-viewer.exe"
+SectionEnd
