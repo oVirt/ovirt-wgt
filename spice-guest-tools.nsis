@@ -14,7 +14,7 @@ SetCompressor lzma
 
 Name "SPICE Guest Tools"
 OutFile "spice-guest-tools-0.0.1.exe"
-InstallDir "$PROGRAMFILES\virt-viewer-@VERSION@.exe"
+InstallDir "$PROGRAMFILES\SPICE Guest Tools"
 # SilentInstall silent
 
 # ShowInstDetails hide
