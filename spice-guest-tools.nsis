@@ -9,8 +9,7 @@
 
 SetCompressor lzma
 
-!include "winver.nsh"
-!include "driver-hack.nsh"
+!include "driver.nsh"
 
 Name "SPICE Guest Tools"
 OutFile "spice-guest-tools-0.0.1.exe"
@@ -37,9 +36,19 @@ Section "spice-guest-tools"
   SetOutPath "$INSTDIR"
   File "bin/vdagent_x86/vdagent.exe"
   File "bin/vdagent_x86/vdservice.exe"
-  File /r "drivers/"
+  SetOutPath "$INSTDIR/drivers"
+  File /r "drivers/qxl/xp/x86/*"
+  File /r "drivers/vioserial/WXp/x86/*"
 
-  !insertmacro InstallUpgradeDriver "$INSTDIR\drivers" "$INSTDIR/drivers/qxl/w7/x86/qxl.inf" "PCI\VEN_1b36&DEV_0100&SUBSYS_11001af4"
+  Push "$INSTDIR\drivers\"
+  Push "$INSTDIR\drivers\vioser.inf"
+  Push "PCI\VEN_1AF4&DEV_1003&SUBSYS_00031AF4"
+  Call InstallUpgradeDriver
+
+  Push "$INSTDIR/drivers/"
+  Push "$INSTDIR/drivers/qxl.inf"
+  Push "PCI\VEN_1b36&DEV_0100&SUBSYS_11001af4"
+  Call InstallUpgradeDriver
 
   SetOutPath "$INSTDIR"
   nsExec::ExecToLog 'vdservice install'
