@@ -66,7 +66,7 @@ Section "Desktop Icons"
 SectionEnd
 
 Section "Uninstall"
-  Delete /rebootok "$SMPROGRAMS\virt-viewer\Uninstall virt-viewer.lnk"
+  Delete /rebootok "$SMPROGRAMS\virt-viewer\Uninstall SPICE Guest Tools.lnk"
   RMDir "$SMPROGRAMS\spice-guest-tools"
 
   SetOutPath "$INSTDIR"
