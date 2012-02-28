@@ -1,0 +1,19 @@
+These scripts are used to generate an installer for the drivers and
+programs that are useful in a Windows guest using SPICE. Currently this
+includes spice-vdagent (for copy and paste support among lots of other
+things), the QXL video driver and the vioserial driver (which vdagent
+needs).
+This script installs these progams/drivers and then makes sure they are
+started up/picked up correctly by Windows.
+
+This script needs to have the various binaries/drivers it will install
+available, they are not included in this archive. The various 'File'
+directives in spice-guest-tools.nsis should give you an idea of the
+directory tree the script expects.
+
+To build the final installer, I'm using the mingw32-nsis package from
+http://fedoraproject.org/wiki/MinGW/CrossCompilerFramework#Development_and_testing_repository
+(but this should be available directly from the official Fedora
+repositories starting with Fedora 17 or 18). Once this is installed, all
+that is needed is to run makensis ./spice-guest-tools.nsi from your Linux
+box, and magic will happen!
