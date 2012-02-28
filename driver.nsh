@@ -60,6 +60,8 @@ Function InstallUpgradeDriver
  StrCmp $R3 '2000' lbl_upgrade
  StrCmp $R3 'XP' lbl_upgrade
  StrCmp $R3 '2003' lbl_upgrade
+ StrCmp $R3 'Vista' lbl_pnputil
+ StrCmp $R3 '7' lbl_pnputil
  DetailPrint "Windows $R3 doesn't support automatic driver updates."
  
  ; Upgrade the driver if the device is already plugged in
@@ -84,6 +86,7 @@ lbl_notplugged:
  Goto lbl_noupgrade
 lbl_noapi:
  DetailPrint "Your Windows $R3 doesn't support driver updates."
+ Goto lbl_noupgrade
  
 lbl_noupgrade:
  ; Pre-install the driver
@@ -92,6 +95,7 @@ lbl_noupgrade:
  StrCmp $0 'error' lbl_inoapi
  DetailPrint "Installing the driver..."
  ; INFPATH, INFDIR, SPOST_PATH, "", 0, 0, 0, 0
+ DetailPrint 'DEBUG: $R1 $R2 ${SPOST_PATH}'
  System::Call '${sysSetupCopyOEMInf}?e (R1, R2, ${SPOST_PATH}, 0, 0, 0, 0, 0) .r0'
  Pop $1 ; last error
  IntCmp $0 1 lbl_nodriver
@@ -99,6 +103,24 @@ lbl_noupgrade:
  Goto lbl_done
 lbl_inoapi:
  DetailPrint "Your Windows $R3 doesn't support driver pre-installation."
+ Goto lbl_nodriver
+ 
+lbl_pnputil:
+ DetailPrint 'pnputil.exe -i -a "$R1"'
+ nsExec::ExecToLog 'pnputil.exe -i -a "$R1"'
+ Pop $0
+ StrCmp $0 "error" lbl_pnputil_not_found
+ StrCmp $0 "timeout" lbl_pnputil_timeout
+ IntCmp $0 0 lbl_done
+ DetailPrint "pnputil.exe reported an error: $0"
+ Goto lbl_nodriver
+lbl_pnputil_not_found:
+ DetailPrint "pnputil.exe not found"
+ Goto lbl_nodriver
+lbl_pnputil_timeout:
+ DetailPrint "timeout waiting for pnputil.exe to run"
+ Goto lbl_nodriver
+ 
 lbl_nodriver:
 lbl_done:
  
