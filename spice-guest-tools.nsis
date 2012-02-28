@@ -36,17 +36,17 @@ Section "spice-guest-tools"
   SetOutPath "$INSTDIR"
   File "bin/vdagent_x86/vdagent.exe"
   File "bin/vdagent_x86/vdservice.exe"
-  SetOutPath "$INSTDIR/drivers"
-  File /r "drivers/qxl/xp/x86/*"
-  File /r "drivers/vioserial/WXp/x86/*"
+  SetOutPath "$INSTDIR\drivers"
+  File /r "drivers/qxl/w7/x86/*"
+  File /r "drivers/virtio/Win7/x86/*"
 
-  Push "$INSTDIR\drivers\"
+  Push "$INSTDIR\drivers"
   Push "$INSTDIR\drivers\vioser.inf"
   Push "PCI\VEN_1AF4&DEV_1003&SUBSYS_00031AF4"
   Call InstallUpgradeDriver
 
-  Push "$INSTDIR/drivers/"
-  Push "$INSTDIR/drivers/qxl.inf"
+  Push "$INSTDIR\drivers"
+  Push "$INSTDIR\drivers\qxl.inf"
   Push "PCI\VEN_1b36&DEV_0100&SUBSYS_11001af4"
   Call InstallUpgradeDriver
 
