@@ -111,6 +111,7 @@ lbl_pnputil:
  Pop $0
  StrCmp $0 "error" lbl_pnputil_not_found
  StrCmp $0 "timeout" lbl_pnputil_timeout
+ IntCmp $0 "1" lbl_pnputil_already_exists
  IntCmp $0 0 lbl_done
  DetailPrint "pnputil.exe reported an error: $0"
  Goto lbl_nodriver
@@ -119,6 +120,9 @@ lbl_pnputil_not_found:
  Goto lbl_nodriver
 lbl_pnputil_timeout:
  DetailPrint "timeout waiting for pnputil.exe to run"
+ Goto lbl_nodriver
+lbl_pnputil_already_exists:
+ DetailPrint "Driver does not need upgraded"
  Goto lbl_nodriver
  
 lbl_nodriver:
