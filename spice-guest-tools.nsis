@@ -111,8 +111,12 @@ SectionEnd
 Function .onInit
    ${if} ${RunningX64}
      ${if} ${IsWinXP}
-       MessageBox MB_ICONEXCLAMATION "Windows XP 64 bit is an unsupported Windows version!"
+       MessageBox MB_ICONEXCLAMATION "Windows XP 64 bit is an unsupported Windows version"
        Abort ; causes installer to quit.
      ${endif}
+   ${endif}
+   ${if} ${AtMostWin2000}
+       MessageBox MB_ICONEXCLAMATION "Drivers only available for Windows XP or newer"
+       Abort ; causes installer to quit.
    ${endif}
 FunctionEnd
