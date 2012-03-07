@@ -10,6 +10,7 @@
 #
 #
 # Copyright (c) 2012 Red Hat, Inc
+# Copyright (c) 2012 Grant Williamson <grant.williamson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -33,6 +34,8 @@
 SetCompressor lzma
 
 !include "driver.nsh"
+!include "WinVer.nsh"
+!include "x64.nsh"
 
 Name "SPICE Guest Tools"
 OutFile "spice-guest-tools-0.0.1.exe"
@@ -104,3 +107,12 @@ SectionEnd
 Section -post
   WriteUninstaller "$INSTDIR\Uninstall virt-viewer.exe"
 SectionEnd
+
+Function .onInit
+   ${if} ${RunningX64}
+     ${if} ${IsWinXP}
+       MessageBox MB_ICONEXCLAMATION "Windows XP 64 bit is an unsupported Windows version!"
+       Abort ; causes installer to quit.
+     ${endif}
+   ${endif}
+FunctionEnd
