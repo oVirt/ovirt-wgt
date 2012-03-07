@@ -93,7 +93,6 @@ lbl_noupgrade:
  StrCmp $0 'error' lbl_inoapi
  DetailPrint "Installing the driver..."
  ; INFPATH, INFDIR, SPOST_PATH, "", 0, 0, 0, 0
- DetailPrint 'DEBUG: $R1 $R2 ${SPOST_PATH}'
  System::Call '${sysSetupCopyOEMInf}?e (R1, R2, ${SPOST_PATH}, 0, 0, 0, 0, 0) .r0'
  Pop $1 ; last error
  IntCmp $0 1 lbl_nodriver
