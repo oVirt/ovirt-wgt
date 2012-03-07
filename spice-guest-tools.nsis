@@ -85,6 +85,19 @@ Section "spice-guest-tools"
   Push "PCI\VEN_1b36&DEV_0100&SUBSYS_11001af4"
   Call InstallDriver
 
+  Push "balloon"
+  Push "PCI\VEN_1AF4&DEV_1002&SUBSYS_00051AF4&REV_00"
+  Call InstallDriver
+
+  Push "viostor"
+  Push "PCI\VEN_1AF4&DEV_1001&SUBSYS_00021AF4&REV_00"
+  Call InstallDriver
+
+  Push "netkvm"
+  Push "PCI\VEN_1AF4&DEV_1000&SUBSYS_00011AF4&REV_00"
+  Call InstallDriver
+
+
   SetOutPath "$INSTDIR"
   nsExec::ExecToLog 'vdservice install'
   nsExec::ExecToLog 'net start vdservice'
