@@ -69,9 +69,12 @@ DirText "Please select the installation folder."
 Section "spice-guest-tools"
   SectionIn RO
 
-  SetOutPath "$INSTDIR"
+  SetOutPath "$INSTDIR\32"
   File "bin/vdagent_x86/vdagent.exe"
   File "bin/vdagent_x86/vdservice.exe"
+  SetOutPath "$INSTDIR\64"
+  File "bin/vdagent_x64/vdagent.exe"
+  File "bin/vdagent_x64/vdservice.exe"
 
   SetOutPath "$INSTDIR\drivers"
   File /r drivers/virtio/
@@ -98,7 +101,11 @@ Section "spice-guest-tools"
   Call InstallDriver
 
 
-  SetOutPath "$INSTDIR"
+  ${if} ${RunningX64}
+    SetOutPath "$INSTDIR\64"
+  ${else}
+    SetOutPath "$INSTDIR\32"
+  ${endif}
   nsExec::ExecToLog 'vdservice install'
   nsExec::ExecToLog 'net start vdservice'
 
@@ -117,12 +124,16 @@ Section "Uninstall"
   Delete /rebootok "$SMPROGRAMS\virt-viewer\Uninstall SPICE Guest Tools.lnk"
   RMDir "$SMPROGRAMS\spice-guest-tools"
 
-  SetOutPath "$INSTDIR"
+  ${if} ${RunningX64}
+    SetOutPath "$INSTDIR\64"
+  ${else}
+    SetOutPath "$INSTDIR\32"
+  ${EndIf}
   nsExec::ExecToLog 'net stop vdservice'
   nsExec::ExecToLog 'vdservice uninstall'
 
-  Delete /rebootok "$INSTDIR\vdagent.exe"
-  Delete /rebootok "$INSTDIR\vdservice.exe"
+  Delete /rebootok "$OUTDIR\vdagent.exe"
+  Delete /rebootok "$OUTDIR\vdservice.exe"
   RMDir "$INSTDIR"
 SectionEnd
 
