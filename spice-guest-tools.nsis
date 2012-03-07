@@ -62,19 +62,18 @@ Section "spice-guest-tools"
   SetOutPath "$INSTDIR"
   File "bin/vdagent_x86/vdagent.exe"
   File "bin/vdagent_x86/vdservice.exe"
+
   SetOutPath "$INSTDIR\drivers"
-  File /r "drivers/qxl/w7/x86/*"
-  File /r "drivers/virtio/Win7/x86/*"
+  File /r drivers/virtio/
+  File /r drivers/qxl/
 
-  Push "$INSTDIR\drivers"
-  Push "$INSTDIR\drivers\vioser.inf"
+  Push "vioser"
   Push "PCI\VEN_1AF4&DEV_1003&SUBSYS_00031AF4"
-  Call InstallUpgradeDriver
+  Call InstallDriver
 
-  Push "$INSTDIR\drivers"
-  Push "$INSTDIR\drivers\qxl.inf"
+  Push "qxl"
   Push "PCI\VEN_1b36&DEV_0100&SUBSYS_11001af4"
-  Call InstallUpgradeDriver
+  Call InstallDriver
 
   SetOutPath "$INSTDIR"
   nsExec::ExecToLog 'vdservice install'
@@ -119,4 +118,40 @@ Function .onInit
        MessageBox MB_ICONEXCLAMATION "Drivers only available for Windows XP or newer"
        Abort ; causes installer to quit.
    ${endif}
+FunctionEnd
+
+Function GetDriverSubdir
+   ${If} ${IsWinXP}
+      StrCpy $0 "WXp"
+   ${ElseIf} ${IsWinVista}
+      StrCpy $0 "Wlh"
+   ${ElseIf} ${IsWin2003}
+      StrCpy $0 "Wnet"
+   ${ElseIf} ${IsWin7}
+      StrCpy $0 "Win7"
+   ${Else}
+      MessageBox MB_ICONEXCLAMATION "Unsupported Windows version"
+      Abort ; causes installer to quit.
+   ${EndIf}
+
+   ${If} ${RunningX64}
+      StrCpy $0 "$0\amd64"
+   ${Else}
+      StrCpy $0 "$0\x86"
+   ${EndIf}
+
+   Push $0
+FunctionEnd
+
+Function InstallDriver
+  Pop $R0 ; HID
+  Pop $R1 ; driver name
+  Call GetDriverSubdir
+  Pop $0
+  StrCpy $1 "$INSTDIR\drivers\$0"
+  Push $1
+  StrCpy $2 "$1\$R1.inf"
+  Push $2
+  Push $R0
+  Call InstallUpgradeDriver
 FunctionEnd
