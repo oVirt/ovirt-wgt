@@ -38,10 +38,11 @@ SetCompressor lzma
 !include "x64.nsh"
 
 Name "SPICE Guest Tools"
+Caption "SPICE Guest Tools Installer"
 OutFile "spice-guest-tools-0.0.1.exe"
 InstallDir "$PROGRAMFILES\SPICE Guest Tools"
-# SilentInstall silent
 
+# SilentInstall silent
 # ShowInstDetails hide
 # ShowUninstDetails hide
 
