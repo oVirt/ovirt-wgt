@@ -1,4 +1,4 @@
-!include "winver.nsh"
+!include "WinVer.nsh"
 !include "drvsetup.nsh"
  
 ;
@@ -53,19 +53,17 @@ Function InstallUpgradeDriver
  Pop $R1 ; INFPATH
  Pop $R2 ; INFDIR
  
- ; Get the Windows version
- Call GetWindowsVersion
- Pop $R3 ; Windows Version
- ;DetailPrint 'Windows Version: $R3'
- StrCmp $R3 '2000' lbl_upgrade
- StrCmp $R3 'XP' lbl_upgrade
- StrCmp $R3 '2003' lbl_upgrade
- StrCmp $R3 'Vista' lbl_pnputil
- StrCmp $R3 '7' lbl_pnputil
- DetailPrint "Windows $R3 doesn't support automatic driver updates."
- 
- ; Upgrade the driver if the device is already plugged in
+ ${If} ${AtLeastWin2000}
+   ${AndIf} ${AtMostWin2003}
+     Goto lbl_upgrade
+ ${EndIf}
+ ${If} ${AtLeastWinVista}
+   Goto lbl_pnputil
+ ${EndIf}
+
+ DetailPrint "This Windows version doesn't support automatic driver updates."
  Goto lbl_noupgrade
+
 lbl_upgrade:
  System::Get '${sysUpdateDriverForPlugAndPlayDevices}'
  Pop $0
@@ -79,13 +77,13 @@ lbl_upgrade:
  IntCmp $0 1 lbl_done
  IntCmp $1 ${ERROR_NO_SUCH_DEVINST} lbl_notplugged
  
- DetailPrint "Driver update has failed. ($R3:$0,$1)"
+ DetailPrint "Driver update has failed. ($0,$1)"
  Goto lbl_noupgrade
 lbl_notplugged:
  DetailPrint "The device is not plugged in, cannot update the driver."
  Goto lbl_noupgrade
 lbl_noapi:
- DetailPrint "Your Windows $R3 doesn't support driver updates."
+ DetailPrint "Your Windows version doesn't support driver updates."
  Goto lbl_noupgrade
  
 lbl_noupgrade:
