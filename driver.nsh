@@ -1,5 +1,6 @@
 !include "WinVer.nsh"
 !include "drvsetup.nsh"
+!include "x64.nsh"
  
 ;
 ; Written by Kuba Ober
@@ -57,7 +58,19 @@ Function InstallUpgradeDriver
    ${AndIf} ${AtMostWin2003}
      Goto lbl_upgrade
  ${EndIf}
+
+ ${If} ${AtLeastWin7}
+   ${If} ${RunningX64}
+     StrCpy $R3 "C:\Windows\winsxs\amd64_microsoft-windows-pnputil_31bf3856ad364e35_6.1.7600.16385_none_5958b438d6388d15\PnPutil.exe"
+     goto lbl_pnputil
+   ${Else}
+     StrCpy $R3 "C:\Windows\winsxs\x86_microsoft-windows-pnputil_31bf3856ad364e35_6.1.7600.16385_none_fd3a18b51ddb1bdf\PnPutil.exe"
+     goto lbl_pnputil
+   ${EndIf}
+${EndIf}
+
  ${If} ${AtLeastWinVista}
+   StrCpy $R3 "pnputil.exe"
    Goto lbl_pnputil
  ${EndIf}
 
@@ -96,15 +109,15 @@ lbl_noupgrade:
  System::Call '${sysSetupCopyOEMInf}?e (R1, R2, ${SPOST_PATH}, 0, 0, 0, 0, 0) .r0'
  Pop $1 ; last error
  IntCmp $0 1 lbl_nodriver
- DetailPrint 'Driver pre-installation has failed with error #$1 ($R3)'
+ DetailPrint 'Driver pre-installation has failed with error #$1'
  Goto lbl_done
 lbl_inoapi:
- DetailPrint "Your Windows $R3 doesn't support driver pre-installation."
+ DetailPrint "Your Windows version doesn't support driver pre-installation."
  Goto lbl_nodriver
  
 lbl_pnputil:
  DetailPrint 'pnputil.exe -i -a "$R1"'
- nsExec::ExecToLog 'pnputil.exe -i -a "$R1"'
+ nsExec::ExecToLog '$R3 -i -a "$R1"'
  Pop $0
  StrCmp $0 "error" lbl_pnputil_not_found
  StrCmp $0 "timeout" lbl_pnputil_timeout
