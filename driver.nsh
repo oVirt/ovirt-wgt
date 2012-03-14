@@ -53,6 +53,7 @@ Function InstallUpgradeDriver
  Pop $R0 ; HID
  Pop $R1 ; INFPATH
  Pop $R2 ; INFDIR
+ Pop $R3 ; driver name
  
  ${If} ${AtLeastWin2000}
    ${AndIf} ${AtMostWin2003}
@@ -61,16 +62,16 @@ Function InstallUpgradeDriver
 
  ${If} ${AtLeastWin7}
    ${If} ${RunningX64}
-     StrCpy $R3 "C:\Windows\winsxs\amd64_microsoft-windows-pnputil_31bf3856ad364e35_6.1.7600.16385_none_5958b438d6388d15\PnPutil.exe"
+     StrCpy $0 "C:\Windows\winsxs\amd64_microsoft-windows-pnputil_31bf3856ad364e35_6.1.7600.16385_none_5958b438d6388d15\PnPutil.exe"
      goto lbl_pnputil
    ${Else}
-     StrCpy $R3 "C:\Windows\winsxs\x86_microsoft-windows-pnputil_31bf3856ad364e35_6.1.7600.16385_none_fd3a18b51ddb1bdf\PnPutil.exe"
+     StrCpy $0 "C:\Windows\winsxs\x86_microsoft-windows-pnputil_31bf3856ad364e35_6.1.7600.16385_none_fd3a18b51ddb1bdf\PnPutil.exe"
      goto lbl_pnputil
    ${EndIf}
 ${EndIf}
 
  ${If} ${AtLeastWinVista}
-   StrCpy $R3 "pnputil.exe"
+   StrCpy $0 "pnputil.exe"
    Goto lbl_pnputil
  ${EndIf}
 
@@ -81,7 +82,7 @@ lbl_upgrade:
  System::Get '${sysUpdateDriverForPlugAndPlayDevices}'
  Pop $0
  StrCmp $0 'error' lbl_noapi
- DetailPrint "Updating the driver..."
+ DetailPrint "Updating the $R3 driver..."
  ; 0, HID, INFPATH, 0, 0
  Push $INSTDIR ; Otherwise this function will swallow it, dunno why
  System::Call '${sysUpdateDriverForPlugAndPlayDevices}?e (0, R0, R1, 0, 0) .r0'
@@ -93,7 +94,7 @@ lbl_upgrade:
  DetailPrint "Driver update has failed. ($0,$1)"
  Goto lbl_noupgrade
 lbl_notplugged:
- DetailPrint "The device is not plugged in, cannot update the driver."
+ DetailPrint "The device is not plugged in, cannot update the $R3 driver."
  Goto lbl_noupgrade
 lbl_noapi:
  DetailPrint "Your Windows version doesn't support driver updates."
@@ -104,7 +105,7 @@ lbl_noupgrade:
  System::Get '${sysSetupCopyOEMInf}'
  Pop $0
  StrCmp $0 'error' lbl_inoapi
- DetailPrint "Installing the driver..."
+ DetailPrint "Installing the $R3 driver..."
  ; INFPATH, INFDIR, SPOST_PATH, "", 0, 0, 0, 0
  System::Call '${sysSetupCopyOEMInf}?e (R1, R2, ${SPOST_PATH}, 0, 0, 0, 0, 0) .r0'
  Pop $1 ; last error
@@ -117,7 +118,8 @@ lbl_inoapi:
  
 lbl_pnputil:
  DetailPrint 'pnputil.exe -i -a "$R1"'
- nsExec::ExecToLog '$R3 -i -a "$R1"'
+ DetailPrint "Installing the $R3 driver..."
+ nsExec::ExecToLog '$0 -i -a "$R1"'
  Pop $0
  StrCmp $0 "error" lbl_pnputil_not_found
  StrCmp $0 "timeout" lbl_pnputil_timeout

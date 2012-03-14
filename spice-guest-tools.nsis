@@ -182,10 +182,13 @@ Function InstallDriver
   Pop $R1 ; driver name
   Call GetDriverSubdir
   Pop $0
-  StrCpy $1 "$INSTDIR\drivers\$0"
+  StrCpy $1 $R1
   Push $1
-  StrCpy $2 "$1\$R1.inf"
+  StrCpy $2 "$INSTDIR\drivers\$0"
   Push $2
+  StrCpy $3 "$2\$R1.inf"
+  Push $3
   Push $R0
+  DetailPrint "Installing $R1.inf"
   Call InstallUpgradeDriver
 FunctionEnd
