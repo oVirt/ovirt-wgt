@@ -40,6 +40,7 @@ SetCompressor lzma
 Name "SPICE Guest Tools"
 Caption "SPICE Guest Tools Installer"
 OutFile "spice-guest-tools-0.0.1.exe"
+BrandingText " "
 InstallDir "$PROGRAMFILES\SPICE Guest Tools"
 
 # SilentInstall silent
