@@ -44,7 +44,7 @@ BrandingText " "
 InstallDir "$PROGRAMFILES\SPICE Guest Tools"
 
 # SilentInstall silent
-# ShowInstDetails hide
+ShowInstDetails nevershow
 # ShowUninstDetails hide
 
 !include "MUI2.nsh"
