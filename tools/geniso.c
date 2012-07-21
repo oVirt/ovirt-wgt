@@ -143,6 +143,13 @@ static gboolean copy_file(const char *src, const char *dest, GError **error)
     src_file = g_file_new_for_path(src);
     dest_file = g_file_new_for_path(dest);
     success = g_file_copy(src_file, dest_file, G_FILE_COPY_NONE, NULL, NULL, NULL, error);
+    if (error && *error) {
+        if (g_str_has_suffix(src, "wdfcoinstaller01009.dll") && ((*error)->code ==  G_IO_ERROR_EXISTS)) {
+            // ignore error, ugly workaround
+            g_clear_error(error);
+            success = TRUE;
+        }
+    }
     g_object_unref(src_file);
     g_object_unref(dest_file);
 
