@@ -138,7 +138,7 @@ static gboolean copy_file(const char *src, const char *dest, GError **error)
     GFile *dest_file;
     gboolean success;
 
-    g_warning("Copying %s to %s", src, dest);
+    g_print("Copying %s to %s\n", src, dest);
 
     src_file = g_file_new_for_path(src);
     dest_file = g_file_new_for_path(dest);
@@ -296,7 +296,9 @@ static void copy_drivers(const VioDriverSet *drivers, const char *base_src, cons
             g_print("\t=== %s ===\n", vio_driver_names[d]);
             copy_driver(&drivers[ver][d], ver, FALSE, base_src, base_dest);
             copy_driver(&drivers[ver][d], ver, TRUE, base_src, base_dest);
+            g_print("\n");
         }
+        g_print("\n\n");
     }
 }
 
