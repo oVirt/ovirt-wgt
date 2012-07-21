@@ -43,6 +43,7 @@ typedef enum {
     VIO_DRIVER_SERIAL,
     VIO_DRIVER_BALLOON,
     VIO_DRIVER_BLOCK,
+    VIO_DRIVER_SCSI,
     VIO_DRIVER_LAST
 } VioDriverName;
 
@@ -50,7 +51,8 @@ static const char *vio_driver_names[] = {
     [VIO_DRIVER_NETKVM] = "netkvm",
     [VIO_DRIVER_SERIAL] = "serial",
     [VIO_DRIVER_BALLOON] = "balloon",
-    [VIO_DRIVER_BLOCK] = "block"
+    [VIO_DRIVER_BLOCK] = "block",
+    [VIO_DRIVER_SCSI] = "scsi"
 };
 
 typedef VioDriver VioDriverSet[VIO_DRIVER_LAST];
@@ -82,42 +84,49 @@ static const VioDriverSet drivers[] = {
         [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64", "(vioser.*|wdfcoinstaller.*.dll)" },
         [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)" },
         [VIO_DRIVER_BLOCK] = { "Wxp/x86", "Wnet/amd64", "viostor.*" },
+        [VIO_DRIVER_SCSI] = { "Wnet/x86", "Wnet/amd64", "vioscsi.*" },
     },
     [VIO_WINVER_WIN2003] = {
         [VIO_DRIVER_NETKVM] = { "XP/x86", "XP/amd64", "(netkvm.*|readme.doc)" },
         [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64", "(vioser.*|wdfcoinstaller.*.dll)" },
         [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)" },
         [VIO_DRIVER_BLOCK] = { "Wnet/x86", "Wnet/amd64", "viostor.*" },
+        [VIO_DRIVER_SCSI] = { "Wnet/x86", "Wnet/amd64", "vioscsi.*" },
     },
     [VIO_WINVER_VISTA] = {
         [VIO_DRIVER_NETKVM] = { "Vista/x86", "Vista/amd64", "(netkvm.*|readme.doc)" },
         [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64", "(vioser.*|wdfcoinstaller.*.dll)" },
         [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)" },
         [VIO_DRIVER_BLOCK] = { "Wlh/x86", "Wlh/amd64", "viostor.*" },
+        [VIO_DRIVER_SCSI] = { "Wlh/x86", "Wlh/amd64", "vioscsi.*" },
     },
     [VIO_WINVER_WIN7] = {
         [VIO_DRIVER_NETKVM] = { "Win7/x86", "Win7/amd64", "(netkvm.*|readme.doc)" },
         [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64", "(vioser.*|wdfcoinstaller.*.dll)" },
         [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)" },
         [VIO_DRIVER_BLOCK] = { "Wlh/x86", "Wlh/amd64", "viostor.*" },
+        [VIO_DRIVER_SCSI] = { "Win7/x86", "Win7/amd64", "vioscsi.*" },
     },
     [VIO_WINVER_WIN2008] = {
         [VIO_DRIVER_NETKVM] = { "Vista/x86", "Vista/amd64", "(netkvm.*|readme.doc)" },
         [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64", "(vioser.*|wdfcoinstaller.*.dll)" },
         [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)" },
         [VIO_DRIVER_BLOCK] = { "Wlh/x86", "Wlh/amd64", "viostor.*" },
+        [VIO_DRIVER_SCSI] = { "Wlh/x86", "Wlh/amd64", "vioscsi.*" },
     },
     [VIO_WINVER_WIN2008R2] = {
         [VIO_DRIVER_NETKVM] = { "Win7/x86", "Win7/amd64", "(netkvm.*|readme.doc)" },
         [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64", "(vioser.*|wdfcoinstaller.*.dll)" },
         [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)" },
         [VIO_DRIVER_BLOCK] = { "Wlh/x86", "Wlh/amd64", "viostor.*" },
+        [VIO_DRIVER_SCSI] = { "Win7/x86", "Win7/amd64", "vioscsi.*" },
     },
     [VIO_WINVER_WIN8] = {
         [VIO_DRIVER_NETKVM] = { "Win7/x86", "Win7/amd64", "(netkvm.*|readme.doc)" },
         [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64", "(vioser.*|wdfcoinstaller.*.dll)" },
         [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)" },
         [VIO_DRIVER_BLOCK] = { "Wlh/x86", "Wlh/amd64", "viostor.*" },
+        [VIO_DRIVER_SCSI] = { "Win7/x86", "Win7/amd64", "vioscsi.*" },
     }
 };
 
