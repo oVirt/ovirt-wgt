@@ -74,11 +74,11 @@ typedef enum {
 
 static const char *win_ver_names[] = {
     [VIO_WINVER_WINXP] = "winxp",
-    [VIO_WINVER_WIN2003] = "win2003",
-    [VIO_WINVER_VISTA] = "vista",
+    [VIO_WINVER_WIN2003] = "win2k3",
+    [VIO_WINVER_VISTA] = "winvista",
     [VIO_WINVER_WIN7] = "win7",
-    [VIO_WINVER_WIN2008] = "win2008",
-    [VIO_WINVER_WIN2008R2] = "win2008r2",
+    [VIO_WINVER_WIN2008] = "win2k8",
+    [VIO_WINVER_WIN2008R2] = "win2k8r2",
     [VIO_WINVER_WIN8] = "win8"
 };
 
