@@ -26,6 +26,10 @@
  *
  * Authors: Christophe Fergeau <cfergeau@redhat.com>
  */
+/*
+ * Compile with:
+ * gcc $(pkg-config --cflags --libs glib-2.0 gio-2.0) -Wall -std=gnu99 ./geniso.c
+ */
 #include <glib.h>
 #include <gio/gio.h>
 #include <errno.h>
