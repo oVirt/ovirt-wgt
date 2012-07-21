@@ -35,6 +35,7 @@
 typedef struct {
     const char *x86_path;
     const char *amd64_path;
+    const char *file_regex;
 } VioDriver;
 
 typedef enum {
@@ -77,46 +78,46 @@ static const char *win_ver_names[] = {
 
 static const VioDriverSet drivers[] = {
     [VIO_WINVER_WINXP] = {
-        [VIO_DRIVER_NETKVM] = { "XP/x86", "XP/amd64" },
-        [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64" },
-        [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64" },
-        [VIO_DRIVER_BLOCK] = { "Wxp/x86", "Wnet/amd64" }
+        [VIO_DRIVER_NETKVM] = { "XP/x86", "XP/amd64", "(netkvm.*|readme.doc)" },
+        [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64", "(vioser.*|wdfcoinstaller.*.dll)" },
+        [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)" },
+        [VIO_DRIVER_BLOCK] = { "Wxp/x86", "Wnet/amd64", "viostor.*" },
     },
     [VIO_WINVER_WIN2003] = {
-        [VIO_DRIVER_NETKVM] = { "XP/x86", "XP/amd64" },
-        [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64" },
-        [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64" },
-        [VIO_DRIVER_BLOCK] = { "Wnet/x86", "Wnet/amd64" }
+        [VIO_DRIVER_NETKVM] = { "XP/x86", "XP/amd64", "(netkvm.*|readme.doc)" },
+        [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64", "(vioser.*|wdfcoinstaller.*.dll)" },
+        [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)" },
+        [VIO_DRIVER_BLOCK] = { "Wnet/x86", "Wnet/amd64", "viostor.*" },
     },
     [VIO_WINVER_VISTA] = {
-        [VIO_DRIVER_NETKVM] = { "Vista/x86", "Vista/amd64" },
-        [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64" },
-        [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64" },
-        [VIO_DRIVER_BLOCK] = { "Wlh/x86", "Wlh/amd64" }
+        [VIO_DRIVER_NETKVM] = { "Vista/x86", "Vista/amd64", "(netkvm.*|readme.doc)" },
+        [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64", "(vioser.*|wdfcoinstaller.*.dll)" },
+        [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)" },
+        [VIO_DRIVER_BLOCK] = { "Wlh/x86", "Wlh/amd64", "viostor.*" },
     },
     [VIO_WINVER_WIN7] = {
-        [VIO_DRIVER_NETKVM] = { "Win7/x86", "Win7/amd64" },
-        [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64" },
-        [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64" },
-        [VIO_DRIVER_BLOCK] = { "Wlh/x86", "Wlh/amd64" }
+        [VIO_DRIVER_NETKVM] = { "Win7/x86", "Win7/amd64", "(netkvm.*|readme.doc)" },
+        [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64", "(vioser.*|wdfcoinstaller.*.dll)" },
+        [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)" },
+        [VIO_DRIVER_BLOCK] = { "Wlh/x86", "Wlh/amd64", "viostor.*" },
     },
     [VIO_WINVER_WIN2008] = {
-        [VIO_DRIVER_NETKVM] = { "Vista/x86", "Vista/amd64" },
-        [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64" },
-        [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64" },
-        [VIO_DRIVER_BLOCK] = { "Wlh/x86", "Wlh/amd64" }
+        [VIO_DRIVER_NETKVM] = { "Vista/x86", "Vista/amd64", "(netkvm.*|readme.doc)" },
+        [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64", "(vioser.*|wdfcoinstaller.*.dll)" },
+        [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)" },
+        [VIO_DRIVER_BLOCK] = { "Wlh/x86", "Wlh/amd64", "viostor.*" },
     },
     [VIO_WINVER_WIN2008R2] = {
-        [VIO_DRIVER_NETKVM] = { "Win7/x86", "Win7/amd64" },
-        [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64" },
-        [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64" },
-        [VIO_DRIVER_BLOCK] = { "Wlh/x86", "Wlh/amd64" }
+        [VIO_DRIVER_NETKVM] = { "Win7/x86", "Win7/amd64", "(netkvm.*|readme.doc)" },
+        [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64", "(vioser.*|wdfcoinstaller.*.dll)" },
+        [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)" },
+        [VIO_DRIVER_BLOCK] = { "Wlh/x86", "Wlh/amd64", "viostor.*" },
     },
     [VIO_WINVER_WIN8] = {
-        [VIO_DRIVER_NETKVM] = { "Win7/x86", "Win7/amd64" },
-        [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64" },
-        [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64" },
-        [VIO_DRIVER_BLOCK] = { "Wlh/x86", "Wlh/amd64" }
+        [VIO_DRIVER_NETKVM] = { "Win7/x86", "Win7/amd64", "(netkvm.*|readme.doc)" },
+        [VIO_DRIVER_SERIAL] = { "Wxp/x86", "Wnet/amd64", "(vioser.*|wdfcoinstaller.*.dll)" },
+        [VIO_DRIVER_BALLOON] = { "Wxp/x86", "Wnet/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)" },
+        [VIO_DRIVER_BLOCK] = { "Wlh/x86", "Wlh/amd64", "viostor.*" },
     }
 };
 
@@ -143,34 +144,52 @@ static gboolean link_file(const char *src, const char *dest, GError **error)
 {
     gint status;
 
-    g_warning("Hardlinking %s to %s", src, dest);
+    g_print("Hardlinking %s to %s\n", src, dest);
 
     status = link(src, dest);
     if (status != 0) {
-        g_set_error(error, G_FILE_ERROR, g_file_error_from_errno(errno), "%s", strerror(errno));
+        int errnum = errno;
+        if (g_str_has_suffix(src, "wdfcoinstaller01009.dll") && (errnum == EEXIST)) {
+            // ignore error, ugly workaround
+            return TRUE;
+        }
+        g_set_error(error, G_FILE_ERROR, g_file_error_from_errno(errnum), "%s", strerror(errnum));
         return FALSE;
     }
     return TRUE;
 }
 typedef gboolean (*FileForeachCb)(const char *src, const char *dest, GError **error);
 
-static gboolean file_foreach(const char *src, const char *base_dest, const char *rel_dest, FileForeachCb cb)
+static gboolean file_foreach(const char *src, const char *file_pattern, const char *base_dest, const char *rel_dest, FileForeachCb cb)
 {
     char *dest = g_build_filename(base_dest, rel_dest, NULL);
     GDir *dir;
     GError *error = NULL;
     const char *name;
     int creation_status;
+    GRegex *file_regex;
 
     creation_status = g_mkdir_with_parents(dest, 0755);
     if (creation_status == -1) {
         g_warning("failed to create %s: %s", dest, strerror(errno));
         return FALSE;
     }
+
+    file_regex = g_regex_new(file_pattern,
+                             G_REGEX_CASELESS | G_REGEX_OPTIMIZE,
+                             0, &error);
+    if (error != NULL) {
+        g_warning("error compiling regex %s: %s",
+                  file_pattern, error->message);
+        g_error_free(error);
+        return FALSE;
+    }
+
     dir = g_dir_open(src, 0, &error);
     if (error != NULL) {
         g_warning("error opening %s: %s", src, error->message);
         g_error_free(error);
+        g_regex_unref(file_regex);
         return FALSE;
     }
 
@@ -179,6 +198,9 @@ static gboolean file_foreach(const char *src, const char *base_dest, const char 
         char *dest_filename;
         gboolean success;
 
+        if (!g_regex_match(file_regex, name, 0, NULL)) {
+            continue;
+        }
         src_filename = g_build_filename(src, name, NULL);
         dest_filename = g_build_filename(dest, name, NULL);
         success = cb(src_filename, dest_filename, &error);
@@ -189,21 +211,30 @@ static gboolean file_foreach(const char *src, const char *base_dest, const char 
         g_free(src_filename);
         g_free(dest_filename);
         if (!success) {
+            g_free(dest);
+            g_dir_close(dir);
+            g_regex_unref(file_regex);
             return FALSE;
         }
     }
 
+    g_free(dest);
+    g_dir_close(dir);
+    g_regex_unref(file_regex);
+
     return TRUE;
 }
 
-static gboolean copy_files(const char *src, const char *base_dest, const char *rel_dest)
+static gboolean copy_files(const char *src, const char *file_pattern,
+                           const char *base_dest, const char *rel_dest)
 {
-    return file_foreach(src, base_dest, rel_dest, copy_file);
+    return file_foreach(src, file_pattern, base_dest, rel_dest, copy_file);
 }
 
-static gboolean create_hardlinks(const char *src, const char *base_dest, const char *rel_dest)
+static gboolean create_hardlinks(const char *src, const char *file_pattern,
+                                 const char *base_dest, const char *rel_dest)
 {
-    return file_foreach(src, base_dest, rel_dest, link_file);
+    return file_foreach(src, file_pattern, base_dest, rel_dest, link_file);
 }
 
 static void copy_driver(const VioDriver *driver, VioWinVer winver, gboolean x86_64,
