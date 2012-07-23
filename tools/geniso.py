@@ -5,6 +5,8 @@ import os
 import re
 import shutil
 import sys
+import urllib2
+import subprocess
 
 class Driver:
         def __init__(self, x86_path, amd64_path, file_regex):
@@ -64,50 +66,100 @@ driver_sets = {
     }
 }
 
-base_src = sys.argv[1]
-base_dest = sys.argv[2]
 copied_drivers = {}
 
-for win, driver_set in driver_sets.iteritems():
-        print "OS: ", win;
-        for driver_name, driver in driver_set.iteritems():
-                print "DRIVER: ", driver_name
-                for arch in [ "x86", "amd64" ]:
-                        dest_path = os.path.join(base_dest, win, arch)
-                        try:
-                                os.makedirs(dest_path)
-                        except OSError as e:
-                                if e.errno != errno.EEXIST:
-                                        raise
+def copy_driver(base_src, base_dest, driver, win_name):
+        for arch in [ "x86", "amd64" ]:
+                dest_path = os.path.join(base_dest, win_name, arch)
+                try:
+                        os.makedirs(dest_path)
+                except OSError as e:
+                        if e.errno != errno.EEXIST:
+                                raise
 
-                        driver_key = (os.path.join(driver.paths[arch], driver.file_regex))
-                        try:
-                                src_path = copied_drivers[driver_key]
-                                copy_func = os.link
-                                op_name = "hardlink"
-                        except KeyError:
-                                src_path = os.path.join(base_src, driver.paths[arch].lower())
-                                copy_func = shutil.copy
-                                op_name = "copy"
+                driver_key = (os.path.join(driver.paths[arch], driver.file_regex))
+                try:
+                        src_path = copied_drivers[driver_key]
+                        copy_func = os.link
+                        op_name = "hardlink"
+                except KeyError:
+                        src_path = os.path.join(base_src, driver.paths[arch].lower())
+                        copy_func = shutil.copy
+                        op_name = "copy"
 
-                        file_regex = re.compile(driver.file_regex)
-                        for file in os.listdir(src_path):
-                                if (file_regex.match(file)):
-                                        try:
-                                                src_file = os.path.join(src_path, file)
-                                                dest_file = os.path.join(dest_path, file)
-                                                print "%s from %s to %s"%(op_name, src_file, dest_file)
-                                                if (os.path.isfile(dest_file)):
-                                                        raise OSError(errno.EEXIST, os.strerror(errno.EEXIST))
-                                                copy_func(src_file, dest_file)
-                                        except OSError as e:
-                                                print "exception: ", file
-                                                if e.errno != errno.EEXIST:
-                                                        print "different errno"
-                                                if file != "wdfcoinstaller01009.dll":
-                                                        print "different file"
-                                                if file != "wdfcoinstaller01009.dll" or e.errno != errno.EEXIST:
-                                                        raise
+                file_regex = re.compile(driver.file_regex)
+                for file in os.listdir(src_path):
+                        if (file_regex.match(file)):
+                                try:
+                                        src_file = os.path.join(src_path, file)
+                                        dest_file = os.path.join(dest_path, file)
+                                        print "%s from %s to %s"%(op_name, src_file, dest_file)
+                                        if (os.path.isfile(dest_file)):
+                                                raise OSError(errno.EEXIST, os.strerror(errno.EEXIST))
+                                        copy_func(src_file, dest_file)
+                                except OSError as e:
+                                        if file != "wdfcoinstaller01009.dll" or e.errno != errno.EEXIST:
+                                                raise
 
                         copied_drivers[driver_key] = dest_path
 
+def copy_drivers(base_src, base_dest):
+        for win, driver_set in driver_sets.iteritems():
+                print "OS: ", win;
+                for driver_name, driver in driver_set.iteritems():
+                        print "DRIVER: ", driver_name
+                        copy_driver(base_src, base_dest, driver, win)
+
+def download_iso(dest):
+        base_url = "http://alt.fedoraproject.org/pub/alt/virtio-win/latest/images/bin/"
+        try:
+                response = urllib2.urlopen(base_url)
+                html = response.read()
+
+                isos = set(re.findall("virtio-win.*?\.iso", html))
+                if len(isos) != 1:
+                        raise Exception("failure parsing http://alt.fedoraproject.org/pub/alt/virtio-win/latest/images/bin/ for iso name")
+
+                iso_name = isos.pop()
+                iso_path = os.path.join(dest, iso_name)
+                print "Downloading ", iso_name, "..."
+                remote_iso = urllib2.urlopen(base_url + iso_name)
+                fd = os.open(iso_path, os.O_WRONLY|os.O_EXCL|os.O_CREAT)
+                local_iso = os.fdopen(fd, "w")
+                shutil.copyfileobj(remote_iso, local_iso)
+                local_iso.close
+                print iso_name, "successfully downloaded"
+
+                return iso_name
+
+        except:
+                if 'fd' in locals():
+                        os.remove(iso_name)
+                raise
+
+def geniso(src_dir, iso_path):
+        subprocess.call(["genisoimage", "--cache-inodes", "-J", "-r", "-o", iso_path, src_dir])
+
+class IsoMounter:
+        def __init__(self, iso_path, mountpoint):
+            self.iso_path = iso_path
+            self.mountpoint = mountpoint
+
+        def __enter__(self):
+            subprocess.call(["fuseiso", "-p", iso_path, mountpoint])
+
+        def __exit__(self, type, value, traceback):
+            subprocess.call(["fusermount", "-u", mountpoint])
+
+tempdir = "tmp"
+os.makedirs(tempdir)
+mountpoint = os.path.join(tempdir, "mnt")
+drivers_dest = os.path.join(tempdir, "drivers")
+output_iso_name = "drivers.iso"
+
+iso_name = download_iso(tempdir)
+iso_path = os.path.join(tempdir, iso_name)
+with IsoMounter(iso_path, mountpoint):
+        copy_drivers(mountpoint, drivers_dest)
+        geniso(drivers_dest, output_iso_name)
+print "done"
