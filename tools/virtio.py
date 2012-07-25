@@ -5,6 +5,8 @@ import shutil
 import sys
 import urllib2
 
+_debug_regex = re.compile(".*\.pdb$")
+
 class Driver:
         def __init__(self, x86_path, amd64_path, file_regex):
                 self.paths = { "x86": x86_path, "amd64": amd64_path }
@@ -65,7 +67,7 @@ driver_sets = {
 
 copied_drivers = {}
 
-def _copy_driver(base_src, base_dest, driver, win_name):
+def _copy_driver(base_src, base_dest, driver, win_name, copy_debug = False):
         for arch in [ "x86", "amd64" ]:
                 dest_path = os.path.join(base_dest, win_name, arch)
                 try:
@@ -87,6 +89,8 @@ def _copy_driver(base_src, base_dest, driver, win_name):
                 file_regex = re.compile(driver.file_regex)
                 for file in os.listdir(src_path):
                         if (file_regex.match(file)):
+                                if not copy_debug and _debug_regex.match(file):
+                                        continue
                                 try:
                                         src_file = os.path.join(src_path, file)
                                         dest_file = os.path.join(dest_path, file)
@@ -100,7 +104,7 @@ def _copy_driver(base_src, base_dest, driver, win_name):
 
                         copied_drivers[driver_key] = dest_path
 
-def copy_drivers(base_src, base_dest, driver_filter = None):
+def copy_drivers(base_src, base_dest, driver_filter = None, copy_debug = False):
         for win, driver_set in driver_sets.iteritems():
                 print "OS: ", win;
                 for driver_name, driver in driver_set.iteritems():
@@ -108,7 +112,7 @@ def copy_drivers(base_src, base_dest, driver_filter = None):
                                 print "skipping ", driver_name
                                 continue
                         print "DRIVER: ", driver_name
-                        _copy_driver(base_src, base_dest, driver, win)
+                        _copy_driver(base_src, base_dest, driver, win, copy_debug)
 
 def download_iso(dest):
         base_url = "http://alt.fedoraproject.org/pub/alt/virtio-win/latest/images/bin/"
