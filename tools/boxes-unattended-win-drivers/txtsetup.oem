@@ -1,0 +1,18 @@
+[Disks]
+disk1 = "VirtIO Drivers Disk 1",\viostor.sys
+
+[Defaults]
+SCSI = viostor
+
+[SCSI]
+viostor = "VirtIO Disk Controller"
+
+[Files.SCSI.viostor]
+driver = disk1,viostor.sys,VIOSTOR
+inf = disk1,viostor.inf
+catalog = disk1,viostor.cat
+
+[HardwareIds.scsi.viostor]
+id = "PCI\VEN_1AF4&DEV_1001&SUBSYS_00000000","viostor"
+id = "PCI\VEN_1AF4&DEV_1001&SUBSYS_00020000","viostor"
+id = "PCI\VEN_1AF4&DEV_1001&SUBSYS_00021AF4","viostor"
