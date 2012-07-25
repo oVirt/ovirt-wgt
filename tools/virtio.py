@@ -100,10 +100,13 @@ def _copy_driver(base_src, base_dest, driver, win_name):
 
                         copied_drivers[driver_key] = dest_path
 
-def copy_drivers(base_src, base_dest):
+def copy_drivers(base_src, base_dest, driver_filter = None):
         for win, driver_set in driver_sets.iteritems():
                 print "OS: ", win;
                 for driver_name, driver in driver_set.iteritems():
+                        if driver_filter != None and not driver_name in driver_filter:
+                                print "skipping ", driver_name
+                                continue
                         print "DRIVER: ", driver_name
                         _copy_driver(base_src, base_dest, driver, win)
 
