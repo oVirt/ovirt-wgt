@@ -1,12 +1,9 @@
-#/usr/bin/python
-
 import errno
 import os
 import re
 import shutil
 import sys
 import urllib2
-import subprocess
 
 class Driver:
         def __init__(self, x86_path, amd64_path, file_regex):
@@ -68,7 +65,7 @@ driver_sets = {
 
 copied_drivers = {}
 
-def copy_driver(base_src, base_dest, driver, win_name):
+def _copy_driver(base_src, base_dest, driver, win_name):
         for arch in [ "x86", "amd64" ]:
                 dest_path = os.path.join(base_dest, win_name, arch)
                 try:
@@ -108,7 +105,7 @@ def copy_drivers(base_src, base_dest):
                 print "OS: ", win;
                 for driver_name, driver in driver_set.iteritems():
                         print "DRIVER: ", driver_name
-                        copy_driver(base_src, base_dest, driver, win)
+                        _copy_driver(base_src, base_dest, driver, win)
 
 def download_iso(dest):
         base_url = "http://alt.fedoraproject.org/pub/alt/virtio-win/latest/images/bin/"
@@ -137,29 +134,3 @@ def download_iso(dest):
                         os.remove(iso_name)
                 raise
 
-def geniso(src_dir, iso_path):
-        subprocess.call(["genisoimage", "--cache-inodes", "-J", "-r", "-o", iso_path, src_dir])
-
-class IsoMounter:
-        def __init__(self, iso_path, mountpoint):
-            self.iso_path = iso_path
-            self.mountpoint = mountpoint
-
-        def __enter__(self):
-            subprocess.call(["fuseiso", "-p", iso_path, mountpoint])
-
-        def __exit__(self, type, value, traceback):
-            subprocess.call(["fusermount", "-u", mountpoint])
-
-tempdir = "tmp"
-os.makedirs(tempdir)
-mountpoint = os.path.join(tempdir, "mnt")
-drivers_dest = os.path.join(tempdir, "drivers")
-output_iso_name = "drivers.iso"
-
-iso_name = download_iso(tempdir)
-iso_path = os.path.join(tempdir, iso_name)
-with IsoMounter(iso_path, mountpoint):
-        copy_drivers(mountpoint, drivers_dest)
-        geniso(drivers_dest, output_iso_name)
-print "done"
