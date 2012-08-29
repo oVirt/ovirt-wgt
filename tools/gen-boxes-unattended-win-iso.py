@@ -10,7 +10,8 @@ os.makedirs(tempdir)
 mountpoint = os.path.join(tempdir, "mnt")
 base_dest = os.path.join(tempdir, "boxes")
 drivers_dest = os.path.join(base_dest, "preinst")
-output_iso_name = "boxes-unattended-win-drivers.iso"
+version = "0.1"
+output_iso_name = "boxes-unattended-win-drivers-" + version + ".iso"
 
 iso_name = virtio.download_iso(tempdir)
 iso_path = os.path.join(tempdir, iso_name)
