@@ -5,6 +5,20 @@ import os
 import shutil
 import virtio
 
+def copy_postinst_files(base_dest, files):
+    postinst_path = os.path.join(base_dest, "postinst")
+    os.mkdir(postinst_path)
+    with open(os.path.join(postinst_path, "postinst.cmd"), 'w') as f:
+        for file in files:
+            try:
+                shutil.copy(file, postinst_path)
+                f.write(os.path.basename(file))
+                f.write("\r\n")
+            except:
+                print "Failed to copy postinst file", os.path.basename(file)
+                continue
+
+
 tempdir = "tmp"
 os.makedirs(tempdir)
 mountpoint = os.path.join(tempdir, "mnt")
