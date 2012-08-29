@@ -1,7 +1,11 @@
 import subprocess
 
-def geniso(src_dir, iso_path):
-        subprocess.call(["genisoimage", "--cache-inodes", "-J", "-r", "-o", iso_path, src_dir])
+def geniso(src_dir, iso_path, label = None):
+        extra_args = []
+        if label != None:
+            extra_args += [ "-V", label ]
+
+        subprocess.call(["genisoimage", "--cache-inodes", "-J", "-r"] + extra_args + ["-o", iso_path, src_dir])
 
 class IsoMounter:
         def __init__(self, iso_path, mountpoint):
