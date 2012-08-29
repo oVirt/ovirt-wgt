@@ -126,7 +126,7 @@ def download_iso(dest):
 
                 iso_name = isos.pop()
                 iso_path = os.path.join(dest, iso_name)
-                print "Downloading ", iso_name, "..."
+                print "Downloading", iso_name, "..."
                 remote_iso = urllib2.urlopen(base_url + iso_name)
                 fd = os.open(iso_path, os.O_WRONLY|os.O_EXCL|os.O_CREAT)
                 local_iso = os.fdopen(fd, "w")
@@ -140,4 +140,3 @@ def download_iso(dest):
                 if 'fd' in locals():
                         os.remove(iso_name)
                 raise
-

@@ -34,4 +34,4 @@ with iso.IsoMounter(iso_path, mountpoint):
 shutil.copy(os.path.join("boxes-unattended-win-drivers", "README"), base_dest)
 shutil.copy(os.path.join("boxes-unattended-win-drivers", "txtsetup.oem"), os.path.join(drivers_dest, "winxp", "x86"))
 iso.geniso(base_dest, output_iso_name, "Boxes Win Drivers")
-print "done"
+print output_iso_name, "created"
