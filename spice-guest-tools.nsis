@@ -159,13 +159,17 @@ FunctionEnd
 
 Function GetDriverSubdir
    ${If} ${IsWinXP}
-      StrCpy $0 "WXp"
+      StrCpy $0 "winxp"
    ${ElseIf} ${IsWinVista}
-      StrCpy $0 "Wlh"
+      StrCpy $0 "vista"
    ${ElseIf} ${IsWin2003}
-      StrCpy $0 "Wnet"
+      StrCpy $0 "win2k3"
    ${ElseIf} ${IsWin7}
-      StrCpy $0 "Win7"
+      StrCpy $0 "win7"
+   ${ElseIf} ${IsWin2008}
+      StrCpy $0 "win2k8"
+   ${ElseIf} ${IsWin2008R2}
+      StrCpy $0 "win2k8r2"
    ${Else}
       MessageBox MB_ICONEXCLAMATION "Unsupported Windows version"
       Abort ; causes installer to quit.
