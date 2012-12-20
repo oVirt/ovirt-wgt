@@ -1,0 +1,3 @@
+virtio-win 0.1-49
+QXL 0.1-16
+mingw-vdagent-win 0.6.3.98
