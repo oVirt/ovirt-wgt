@@ -93,7 +93,7 @@ Section "spice-guest-tools"
 
   Push "balloon"
   Push "PCI\VEN_1AF4&DEV_1002&SUBSYS_00051AF4&REV_00"
-  Call InstallDriver
+  Call InstallBalloonDriver
 
   Push "viostor"
   Push "PCI\VEN_1AF4&DEV_1001&SUBSYS_00021AF4&REV_00"
@@ -182,6 +182,15 @@ Function GetDriverSubdir
    ${EndIf}
 
    Push $0
+FunctionEnd
+
+Function InstallBalloonDriver
+  Call InstallDriver
+  Call GetDriverSubdir
+  Pop $0
+  StrCpy $0 "$INSTDIR\drivers\$0\blnsvr.exe -i"
+  nsExec::ExecToLog $0
+  nsExec::ExecToLog 'net start BalloonService'
 FunctionEnd
 
 Function InstallDriver
