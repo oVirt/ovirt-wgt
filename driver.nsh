@@ -60,6 +60,11 @@ Function InstallUpgradeDriver
      Goto lbl_upgrade
  ${EndIf}
 
+ ${If} ${AtLeastWin8}
+   StrCpy $0 "C:\Windows\WinSxS\amd64_microsoft-windows-pnputil_31bf3856ad364e35_6.2.9200.16384_none_562d69f6464bbc65\PnPutil.exe"
+   goto lbl_pnputil
+ ${Endif}
+
  ${If} ${AtLeastWin7}
    ${If} ${RunningX64}
      StrCpy $0 "C:\Windows\winsxs\amd64_microsoft-windows-pnputil_31bf3856ad364e35_6.1.7600.16385_none_5958b438d6388d15\PnPutil.exe"
@@ -68,7 +73,7 @@ Function InstallUpgradeDriver
      StrCpy $0 "C:\Windows\winsxs\x86_microsoft-windows-pnputil_31bf3856ad364e35_6.1.7600.16385_none_fd3a18b51ddb1bdf\PnPutil.exe"
      goto lbl_pnputil
    ${EndIf}
-${EndIf}
+ ${EndIf}
 
  ${If} ${AtLeastWinVista}
    StrCpy $0 "pnputil.exe"
