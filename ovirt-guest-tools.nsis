@@ -1,0 +1,226 @@
+#!Nsis Installer Command Script
+# @configure_input@
+# To build an installer from the script you would normally do:
+#
+#   makensis ovirt-guest-tools
+#
+# which will generate the output file 'ovirt-guest-tools-setup.exe' which is a Windows
+# installer containing your program.
+#
+#
+#
+# Copyright (c) 2012-2014 Red Hat, Inc
+# Copyright (c) 2014 Lev Veyde <lveyde@gmail.com>
+# Copyright (c) 2012 Grant Williamson <grant.williamson@gmail.com>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+
+SetCompressor lzma
+
+!include "driver.nsh"
+!include "WinVer.nsh"
+!include "x64.nsh"
+
+Name "oVirt Guest Tools"
+Caption "oVirt Guest Tools Installer"
+OutFile "ovirt-guest-tools-setup.exe"
+BrandingText " "
+InstallDir "$PROGRAMFILES\oVirt Guest Tools"
+
+# SilentInstall silent
+ShowInstDetails nevershow
+# ShowUninstDetails hide
+
+!include "MUI2.nsh"
+!insertmacro MUI_PAGE_WELCOME
+!insertmacro MUI_PAGE_LICENSE win-driver-license.txt
+!insertmacro MUI_PAGE_INSTFILES
+!insertmacro MUI_PAGE_FINISH
+
+!insertmacro MUI_UNPAGE_WELCOME
+!insertmacro MUI_UNPAGE_INSTFILES
+!insertmacro MUI_UNPAGE_FINISH
+
+!insertmacro MUI_LANGUAGE "English"
+
+XPStyle on
+RequestExecutionLevel admin
+
+ComponentText "Select which optional components you want to install."
+
+DirText "Please select the installation folder."
+
+Section "ovirt-guest-tools"
+  SectionIn RO
+
+  SetOutPath "$INSTDIR"
+  File "version.txt"
+  File "bin/OVirtGuestService.exe"
+  File "bin/ovirt-guest-agent.ini"
+
+  SetOutPath "$INSTDIR\32"
+  File "bin/vdagent_x86/vdagent.exe"
+  File "bin/vdagent_x86/vdservice.exe"
+
+  SetOutPath "$INSTDIR\64"
+  File "bin/vdagent_x64/vdagent.exe"
+  File "bin/vdagent_x64/vdservice.exe"
+
+  SetOutPath "$INSTDIR\drivers"
+  File /r drivers/virtio/
+  File /r drivers/qxl/
+
+  Push "vioser"
+  Push "PCI\VEN_1AF4&DEV_1003&SUBSYS_00031AF4"
+  Call InstallDriver
+
+  Push "qxl"
+  Push "PCI\VEN_1b36&DEV_0100&SUBSYS_11001af4"
+  Call InstallDriver
+
+  Push "balloon"
+  Push "PCI\VEN_1AF4&DEV_1002&SUBSYS_00051AF4&REV_00"
+  Call InstallBalloonDriver
+
+  Push "viostor"
+  Push "PCI\VEN_1AF4&DEV_1001&SUBSYS_00021AF4&REV_00"
+  Call InstallDriver
+
+  Push "netkvm"
+  Push "PCI\VEN_1AF4&DEV_1000&SUBSYS_00011AF4&REV_00"
+  Call InstallDriver
+
+  SetOutPath "$INSTDIR"
+  nsExec::ExecToLog 'OVirtGuestService -install -auto'
+  nsExec::ExecToLog 'net start OVirtGuestService'
+
+  ${if} ${RunningX64}
+    SetOutPath "$INSTDIR\64"
+  ${else}
+    SetOutPath "$INSTDIR\32"
+  ${endif}
+  nsExec::ExecToLog 'vdservice install'
+  nsExec::ExecToLog 'net start vdservice'
+
+SectionEnd
+
+Section "Start Menu Shortcuts"
+  CreateDirectory "$SMPROGRAMS\oVirt Guest Tools"
+  CreateShortCut "$SMPROGRAMS\oVirt Guest Tools\Uninstall oVirt Guest Tools.lnk" "$INSTDIR\Uninstall-ovirt-guest-tools.exe" "" "$INSTDIR\Uninstall-ovirt-guest-tools.exe" 0
+SectionEnd
+
+Section "Desktop Icons"
+#  CreateShortCut "$DESKTOP\virt-viewer.exe.lnk" "$INSTDIR\bin\virt-viewer.exe" "" "$INSTDIR\bin\virt-viewer.exe" 0
+SectionEnd
+
+Section "Uninstall"
+  Delete /rebootok "$SMPROGRAMS\oVirt Guest Tools\Uninstall oVirt Guest Tools.lnk"
+  RMDir "$SMPROGRAMS\oVirt Guest Tools"
+
+  ${if} ${RunningX64}
+    SetOutPath "$INSTDIR\64"
+  ${else}
+    SetOutPath "$INSTDIR\32"
+  ${EndIf}
+  nsExec::ExecToLog 'net stop vdservice'
+  nsExec::ExecToLog 'vdservice uninstall'
+
+  Delete /rebootok "$OUTDIR\vdagent.exe"
+  Delete /rebootok "$OUTDIR\vdservice.exe"
+
+  SetOutPath "$INSTDIR"
+  nsExec::ExecToLog 'net stop OvirtGuestService'
+  nsExec::ExecToLog 'OVirtGuestService.exe -remove'
+
+  RMDir /r /rebootok "$INSTDIR"
+SectionEnd
+
+Section -post
+  WriteUninstaller "$INSTDIR\Uninstall-ovirt-guest-tools.exe"
+SectionEnd
+
+Function .onInit
+   ${if} ${RunningX64}
+     ${if} ${IsWinXP}
+       MessageBox MB_ICONEXCLAMATION "Windows XP 64 bit is an unsupported Windows version"
+       Abort ; causes installer to quit.
+     ${endif}
+   ${endif}
+   ${if} ${AtMostWin2000}
+       MessageBox MB_ICONEXCLAMATION "Drivers only available for Windows XP or newer"
+       Abort ; causes installer to quit.
+   ${endif}
+FunctionEnd
+
+Function GetDriverSubdir
+   ${If} ${IsWinXP}
+      StrCpy $0 "winxp"
+   ${ElseIf} ${IsWinVista}
+      StrCpy $0 "vista"
+   ${ElseIf} ${IsWin2003}
+      StrCpy $0 "win2k3"
+   ${ElseIf} ${IsWin7}
+      StrCpy $0 "win7"
+   ${ElseIf} ${IsWin2008}
+      StrCpy $0 "win2k8"
+   ${ElseIf} ${IsWin2008R2}
+      StrCpy $0 "win2k8r2"
+   ${ElseIf} ${IsWin8}
+      StrCpy $0 "win8"
+   ${ElseIf} ${IsWin8.1}
+      StrCpy $0 "win8"
+   ${Else}
+      MessageBox MB_ICONEXCLAMATION "Unsupported Windows version"
+      Abort ; causes installer to quit.
+   ${EndIf}
+
+   ${If} ${RunningX64}
+      StrCpy $0 "$0\amd64"
+   ${Else}
+      StrCpy $0 "$0\x86"
+   ${EndIf}
+
+   Push $0
+FunctionEnd
+
+Function InstallBalloonDriver
+  Call InstallDriver
+  Call GetDriverSubdir
+  Pop $0
+  StrCpy $0 "$INSTDIR\drivers\$0\blnsvr.exe -i"
+#  nsExec::ExecToLog $0
+#  nsExec::ExecToLog 'net start BalloonService'
+FunctionEnd
+
+Function InstallDriver
+  Pop $R0 ; HID
+  Pop $R1 ; driver name
+  Call GetDriverSubdir
+  Pop $0
+  StrCpy $1 $R1
+  Push $1
+  StrCpy $2 "$INSTDIR\drivers\$0"
+  Push $2
+  StrCpy $3 "$2\$R1.inf"
+  Push $3
+  Push $R0
+  DetailPrint "Installing $R1.inf"
+  Call InstallUpgradeDriver
+FunctionEnd

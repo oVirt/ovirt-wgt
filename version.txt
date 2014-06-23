@@ -1,0 +1,4 @@
+virtio-win 0.1-74
+QXL 0.1-21
+mingw-vdagent-win 0.7.2
+OVirtGuestService 1.0.9-17.1431b7a

@@ -1,0 +1,77 @@
+This image contains drivers/tools to be used during an automatic Windows
+installation.
+
+
+
+PRE-INSTALLATION
+
+The preinst/ directory contains device drivers that are needed to start the
+Windows installation. For example, the viostor driver is there since it's
+needed to be able to install Windows on a disk using a virtio controller.
+This directory contains one subdirectory per Windows version.
+
+To use these drivers with Windows XP, they need to be copied to the root of
+the floppy disk containing the Winnt.sif file for unattended installation.
+A txtsetup.oem file is needed too for the installer to pick up these
+drivers, but it's provided with the drivers.
+
+Things are easier with Windows 7: a DriverPath entry pointing directly to
+the CD directory can be added to the appropriate step in the
+Autounattend.xml file, and the Windows installer will be able to pick up
+the drivers directly from the CD.
+
+  <settings pass="windowsPE">
+    <component name="Microsoft-Windows-PnpCustomizationsWinPE"
+               processorArchitecture="x86"
+               publicKeyToken="31bf3856ad364e35"
+               language="neutral" versionScope="nonSxS"
+               xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <DriverPaths>
+        <PathAndCredentials wcm:keyValue="2" wcm:action="add">
+          <Path>E:\preinst\win7\</Path>
+        </PathAndCredentials>
+      </DriverPaths>
+    </component>
+  </settings>
+
+
+
+
+POST-INSTALLATION
+
+This directory contains programs and commands that must be run after
+Windows installation is complete. This can be used for example to install
+some needed services or drivers on the system. Both Windows XP and Windows
+7 can directly use the files from the CDROM, they only need to be
+told what to run in the Winnt.sif file or Autounattend.xml file.
+
+This directory contains a postinst.cmd file with a list of commands to be
+run after the Windows installation. Any number of binaries can be added to
+this directory and be referenced by the postinst.cmd file.
+
+Commands specific to a given Windows version go to per-version directory.
+Then a postinst.cmd file from this directory is used for commands specific
+to this Windows version. The common commands should still be run even if
+a Windows specific command file is present.
+
+
+  <settings pass="oobeSystem">
+    <component name="Microsoft-Windows-Shell-Setup"
+processorArchitecture="x86" publicKeyToken="31bf3856ad364e35"
+language="neutral" versionScope="nonSxS"
+xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <FirstLogonCommands>
+        <SynchronousCommand wcm:action="add">
+          <Order>1</Order>
+          <CommandLine>E:\postinst\postinst.cmd</CommandLine>
+        </SynchronousCommand>
+      </FirstLogonCommands>
+    </component>
+  </settings>
+
+
+[GuiRunOnce]
+E:\postinst\postinst.cmd
+
