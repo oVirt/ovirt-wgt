@@ -74,6 +74,8 @@ Section "ovirt-guest-tools"
   File "version.txt"
   File "bin/OVirtGuestService.exe"
   File "bin/ovirt-guest-agent.ini"
+  File "bin/default.ini"
+  File "bin/default-logger.ini"
 
   SetOutPath "$INSTDIR\32"
   File "bin/vdagent_x86/vdagent.exe"
