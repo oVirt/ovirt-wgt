@@ -53,15 +53,22 @@ driver_sets = {
         "netkvm": Driver("Win7/x86", "Win7/amd64", "(netkvm.*|readme.doc)"),
         "serial": Driver("Win7/x86", "Win7/amd64", "(vioser.*|wdfcoinstaller.*.dll)"),
         "balloon": Driver("Win7/x86", "Win7/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)"),
-        "block": Driver("Wlh/x86", "Wlh/amd64", "viostor.*"),
+        "block": Driver("Win7/x86", "Win7/amd64", "viostor.*"),
         "scsi": Driver("Win7/x86", "Win7/amd64", "vioscsi.*"),
     },
     "win8": {
-        "netkvm": Driver("Win7/x86", "Win7/amd64", "(netkvm.*|readme.doc)"),
-        "serial": Driver("Win7/x86", "Win7/amd64", "(vioser.*|wdfcoinstaller.*.dll)"),
-        "balloon": Driver("Win7/x86", "Win7/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)"),
-        "block": Driver("Wlh/x86", "Wlh/amd64", "viostor.*"),
-        "scsi": Driver("Win7/x86", "Win7/amd64", "vioscsi.*"),
+        "netkvm": Driver("Win8/x86", "Win8/amd64", "(netkvm.*|readme.doc)"),
+        "serial": Driver("Win8/x86", "Win8/amd64", "(vioser.*|wdfcoinstaller.*.dll)"),
+        "balloon": Driver("Win8/x86", "Win8/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)"),
+        "block": Driver("Win8/x86", "Win8/amd64", "viostor.*"),
+        "scsi": Driver("Win8/x86", "Win8/amd64", "vioscsi.*"),
+    },
+    "win2k12": {
+        "netkvm": Driver("Win8/x86", "Win8/amd64", "(netkvm.*|readme.doc)"),
+        "serial": Driver("Win8/x86", "Win8/amd64", "(vioser.*|wdfcoinstaller.*.dll)"),
+        "balloon": Driver("Win8/x86", "Win8/amd64", "(balloon.*|bln.*|wdfcoinstaller.*.dll)"),
+        "block": Driver("Win8/x86", "Win8/amd64", "viostor.*"),
+        "scsi": Driver("Win8/x86", "Win8/amd64", "vioscsi.*"),
     }
 }
 
@@ -100,7 +107,7 @@ def _copy_driver(base_src, base_dest, driver, win_name, copy_debug=False):
                                                 raise OSError(errno.EEXIST, os.strerror(errno.EEXIST))
                                         copy_func(src_file, dest_file)
                                 except OSError as e:
-                                        if file != "wdfcoinstaller01009.dll" or e.errno != errno.EEXIST:
+                                        if (file != "wdfcoinstaller01009.dll" and file != "wdfcoinstaller01011.dll") or e.errno != errno.EEXIST:
                                                 raise
 
                         copied_drivers[driver_key] = dest_path
