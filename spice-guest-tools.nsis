@@ -172,8 +172,12 @@ Function GetDriverSubdir
       StrCpy $0 "win2k8r2"
    ${ElseIf} ${IsWin8}
       StrCpy $0 "win8"
+   ${ElseIf} ${IsWin2012}
+      StrCpy $0 "win2k12"
    ${ElseIf} ${IsWin8.1}
       StrCpy $0 "win8"
+   ${ElseIf} ${IsWin2012R2}
+      StrCpy $0 "win2k12"
    ${Else}
       MessageBox MB_ICONEXCLAMATION "Unsupported Windows version"
       Abort ; causes installer to quit.
