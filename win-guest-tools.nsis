@@ -61,7 +61,7 @@ Name "${NAME}"
 Caption "${NAME} Installer"
 OutFile "${FILENAME}-${VERSION}.exe"
 InstallDir "$PROGRAMFILES\${NAME}"
-BrandingText " "
+BrandingText ""
 
 # SilentInstall silent
 ShowInstDetails nevershow
