@@ -41,7 +41,7 @@ SetCompressor /SOLID lzma
 Name "oVirt Guest Tools"
 Caption "oVirt Guest Tools Installer"
 OutFile "ovirt-guest-tools-setup.exe"
-BrandingText " "
+BrandingText ""
 InstallDir "$PROGRAMFILES\oVirt Guest Tools"
 
 # SilentInstall silent
