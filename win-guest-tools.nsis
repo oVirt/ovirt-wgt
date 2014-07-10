@@ -95,10 +95,13 @@ Section "install"
   File "version.txt"
 
 !ifdef OVIRT
+  File "bin/vcredist_x86.exe"
   File "bin/OVirtGuestService.exe"
   File "bin/ovirt-guest-agent.ini"
   File "bin/default.ini"
   File "bin/default-logger.ini"
+
+  ExecWait "$INSTDIR\vcredist_x86.exe /q"
 !endif
 
   SetOutPath "$INSTDIR\32"
