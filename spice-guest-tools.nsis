@@ -31,7 +31,7 @@
 # DEALINGS IN THE SOFTWARE.
 #
 
-SetCompressor lzma
+SetCompressor /SOLID lzma
 
 !include "driver.nsh"
 !include "WinVer.nsh"
