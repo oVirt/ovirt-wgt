@@ -72,10 +72,13 @@ Section "ovirt-guest-tools"
 
   SetOutPath "$INSTDIR"
   File "version.txt"
+  File "bin/vcredist_x86.exe"
   File "bin/OVirtGuestService.exe"
   File "bin/ovirt-guest-agent.ini"
   File "bin/default.ini"
   File "bin/default-logger.ini"
+
+  ExecWait "$INSTDIR\vcredist_x86.exe /q"
 
   SetOutPath "$INSTDIR\32"
   File "bin/vdagent_x86/vdagent.exe"
