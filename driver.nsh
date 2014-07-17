@@ -60,24 +60,9 @@ Function InstallUpgradeDriver
      Goto lbl_upgrade
  ${EndIf}
 
- ${If} ${AtLeastWin8}
-   StrCpy $0 "C:\Windows\WinSxS\amd64_microsoft-windows-pnputil_31bf3856ad364e35_6.2.9200.16384_none_562d69f6464bbc65\PnPutil.exe"
-   goto lbl_pnputil
- ${Endif}
-
- ${If} ${AtLeastWin7}
-   ${If} ${RunningX64}
-     StrCpy $0 "C:\Windows\winsxs\amd64_microsoft-windows-pnputil_31bf3856ad364e35_6.1.7600.16385_none_5958b438d6388d15\PnPutil.exe"
-     goto lbl_pnputil
-   ${Else}
-     StrCpy $0 "C:\Windows\winsxs\x86_microsoft-windows-pnputil_31bf3856ad364e35_6.1.7600.16385_none_fd3a18b51ddb1bdf\PnPutil.exe"
-     goto lbl_pnputil
-   ${EndIf}
- ${EndIf}
-
  ${If} ${AtLeastWinVista}
-   StrCpy $0 "pnputil.exe"
-   Goto lbl_pnputil
+   StrCpy $0 "PnPutil.exe"
+   goto lbl_pnputil
  ${EndIf}
 
  DetailPrint "This Windows version doesn't support automatic driver updates."
@@ -124,7 +109,9 @@ lbl_inoapi:
 lbl_pnputil:
  DetailPrint 'pnputil.exe -i -a "$R1"'
  DetailPrint "Installing the $R3 driver..."
+ ${DisableX64FSRedirection}
  nsExec::ExecToLog '$0 -i -a "$R1"'
+ ${EnableX64FSRedirection}
  Pop $0
  StrCmp $0 "error" lbl_pnputil_not_found
  StrCmp $0 "timeout" lbl_pnputil_timeout
