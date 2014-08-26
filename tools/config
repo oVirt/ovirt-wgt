@@ -1,0 +1,4 @@
+QXL_RELEASE=qxl-0.1-21
+QXL_URL=http://www.spice-space.org/download/windows/qxl/${QXL_RELEASE}
+SPICE_RELEASE=vdagent-win-0.7.2
+SPICE_URL=http://www.spice-space.org/download/windows/vdagent/${SPICE_RELEASE}
