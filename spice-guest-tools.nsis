@@ -124,7 +124,7 @@ Section "Desktop Icons"
 SectionEnd
 
 Section "Uninstall"
-  Delete /rebootok "$SMPROGRAMS\virt-viewer\Uninstall SPICE Guest Tools.lnk"
+  Delete /rebootok "$SMPROGRAMS\spice-guest-tools\Uninstall SPICE Guest Tools.lnk"
   RMDir "$SMPROGRAMS\spice-guest-tools"
 
   ${if} ${RunningX64}
@@ -141,7 +141,7 @@ Section "Uninstall"
 SectionEnd
 
 Section -post
-  WriteUninstaller "$INSTDIR\Uninstall virt-viewer.exe"
+  WriteUninstaller "$INSTDIR\Uninstall spice-guest-tools.exe"
 SectionEnd
 
 Function .onInit
