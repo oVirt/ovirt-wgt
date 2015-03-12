@@ -1,0 +1,11 @@
+- run 'python ./tools/gen-upstream-virtio-iso.py'
+   -> this will download the latest virtio ISO and 'unpack' it to
+      tmp/drivers
+- rm -rf drivers/virtio && mv tmp/drivers drivers/virtio
+- remove .pdb (debug) files from drivers/virtio
+- put qxl drivers in drivers/qxl/
+- put agent binaries in bin/vdagent_x64 and bin/vdagent_x86 directories
+- run makensis ./spice-guest-tools.nsis
+
+- don't forget to gather/ship the various sources at the same time!
+

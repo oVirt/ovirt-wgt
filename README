@@ -9,7 +9,8 @@ started up/picked up correctly by Windows.
 This script needs to have the various binaries/drivers it will install
 available, they are not included in this archive. The various 'File'
 directives in spice-guest-tools.nsis should give you an idea of the
-directory tree the script expects.
+directory tree the script expects. There are some rough notes about this
+in INSTALL as well.
 
 To build the final installer, I'm using the mingw32-nsis package from
 http://fedoraproject.org/wiki/MinGW/CrossCompilerFramework#Development_and_testing_repository
