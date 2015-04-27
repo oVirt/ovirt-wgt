@@ -232,7 +232,8 @@ Function InstallDriver
   Call InstallUpgradeDriver
 FunctionEnd
 
-Function StopServices
+!macro StopServices un
+Function ${un}StopServices
   SimpleSC::ServiceIsRunning "vdservice"
   pop $0
   pop $1
@@ -259,3 +260,7 @@ stopBalloon:
   DetailPrint "Failed to stop BalloonService: $0"
 end:
 FunctionEnd
+!macroend
+
+!insertmacro StopServices ""
+!insertmacro StopServices "un."
