@@ -69,6 +69,8 @@ DirText "Please select the installation folder."
 Section "spice-guest-tools"
   SectionIn RO
 
+  Call StopServices
+
   SetOutPath "$INSTDIR"
   File "version.txt"
 
@@ -228,4 +230,32 @@ Function InstallDriver
   Push $R0
   DetailPrint "Installing $R1.inf"
   Call InstallUpgradeDriver
+FunctionEnd
+
+Function StopServices
+  SimpleSC::ServiceIsRunning "vdservice"
+  pop $0
+  pop $1
+  IntCmp $0 0 +1 stopBalloon stopBalloon
+  IntCmp $1 0 stopBalloon +1 +1
+
+  DetailPrint "Stopping vdservice"
+  SimpleSC::StopService "vdservice" 1 30
+  pop $0
+  IntCmp $1 0 stopBalloon +1 +1
+  DetailPrint "Failed to stop vdservice: $0"
+
+stopBalloon:
+  SimpleSC::ServiceIsRunning "BalloonService"
+  pop $0
+  pop $1
+  IntCmp $0 0 +1 end end
+  IntCmp $1 0 end +1 +1
+
+  DetailPrint "Stopping BalloonService"
+  SimpleSC::StopService "BalloonService" 1 30
+  pop $0
+  IntCmp $1 0 end +1 +1
+  DetailPrint "Failed to stop BalloonService: $0"
+end:
 FunctionEnd

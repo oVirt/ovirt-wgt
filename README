@@ -15,6 +15,9 @@ in INSTALL as well.
 To build the final installer, I'm using the mingw32-nsis package from
 http://fedoraproject.org/wiki/MinGW/CrossCompilerFramework#Development_and_testing_repository
 (but this should be available directly from the official Fedora
-repositories starting with Fedora 17 or 18). Once this is installed, all
-that is needed is to run makensis ./spice-guest-tools.nsi from your Linux
-box, and magic will happen!
+repositories starting with Fedora 17 or 18). This also needs NSIS Simple Service plugin
+from http://nsis.sourceforge.net/NSIS_Simple_Service_Plugin . The dll it ships must be in
+NSIS plugin path, for example /usr/share/nsis/Plugins/ on my Fedora machine.
+
+Once this is installed, all that is needed is to run makensis
+./spice-guest-tools.nsi from your Linux box, and magic will happen!
