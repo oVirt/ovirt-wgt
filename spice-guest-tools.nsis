@@ -147,8 +147,7 @@ Section "Uninstall"
   ${else}
     SetOutPath "$INSTDIR\32"
   ${EndIf}
-  nsExec::ExecToLog 'net stop vdservice'
-  nsExec::ExecToLog 'vdservice uninstall'
+  Call un.StopServices
 
   Delete /rebootok "$OUTDIR\vdagent.exe"
   Delete /rebootok "$OUTDIR\vdservice.exe"
