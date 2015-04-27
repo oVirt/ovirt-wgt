@@ -200,11 +200,9 @@ FunctionEnd
 
 Function InstallBalloonDriver
   Call InstallDriver
-  Call GetDriverSubdir
-  Pop $0
-  StrCpy $0 "$INSTDIR\drivers\$0\blnsvr.exe -i"
-  nsExec::ExecToLog $0
-  nsExec::ExecToLog 'net start BalloonService'
+
+  Call InstallBalloonService
+
 FunctionEnd
 
 Function InstallDriver
@@ -298,6 +296,18 @@ Function InstallVdAgentService
   push "SPICE VDAgent"
   push $0
   push "vdservice"
+  Call InstallService
+
+FunctionEnd
+
+Function InstallBalloonService
+  Call GetDriverSubdir
+  Pop $0
+  StrCpy $0 "$INSTDIR\drivers\$0\blnsvr.exe"
+
+  Push "Balloon Service"
+  Push $0
+  Push "BalloonService"
   Call InstallService
 
 FunctionEnd
