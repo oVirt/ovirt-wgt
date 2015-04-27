@@ -118,15 +118,7 @@ Section "spice-guest-tools"
   Push "PCI\VEN_1AF4&DEV_1000&SUBSYS_00011AF4&REV_00"
   Call InstallDriver
 
-
-  ${if} ${RunningX64}
-    SetOutPath "$INSTDIR\64"
-  ${else}
-    SetOutPath "$INSTDIR\32"
-  ${endif}
-  nsExec::ExecToLog 'vdservice install'
-  nsExec::ExecToLog 'net start vdservice'
-
+  Call InstallVdAgentService
 SectionEnd
 
 Section "Start Menu Shortcuts"
@@ -263,3 +255,49 @@ FunctionEnd
 
 !insertmacro StopServices ""
 !insertmacro StopServices "un."
+
+Function InstallService
+  pop $R0 #service name
+  pop $R1 #service path
+  pop $R2 #service pretty name
+
+  SimpleSC::ExistsService $R0
+  Pop $0
+  ${if} $0 == 0
+    DetailPrint "$R2 service already installed"
+    goto InstallService
+  ${endif}
+
+  DetailPrint "Installing $R2 service"
+  SimpleSC::InstallService $R0 $R2 16 2 $R1 "" "" ""
+  Pop $0
+  ${if} $0 != 0
+    DetailPrint "Failed to install $R2 service: $0"
+    Return
+  ${endif}
+  DetailPrint "$R2 service installed"
+
+InstallService:
+  DetailPrint "Starting $R2 service"
+  SimpleSC::StartService $R0 "" 30
+  Pop $0
+  ${if} $0 != 0
+    DetailPrint "Failed to start $R2 service: $0"
+    Return
+  ${endif}
+  DetailPrint "$R2 service started"
+FunctionEnd
+
+Function InstallVdAgentService
+  ${if} ${RunningX64}
+    StrCpy $0 "$INSTDIR\64\vdservice.exe"
+  ${else}
+    StrCpy $0 "$INSTDIR\32\vdservice.exe"
+  ${endif}
+
+  push "SPICE VDAgent"
+  push $0
+  push "vdservice"
+  Call InstallService
+
+FunctionEnd
