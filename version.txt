@@ -1,3 +1,3 @@
-virtio-win 0.1-74
+virtio-win 0.1-100
 QXL 0.1-21
-mingw-vdagent-win 0.7.2
+mingw-vdagent-win 0.7.3
