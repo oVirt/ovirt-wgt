@@ -94,6 +94,11 @@ Section "install"
   SetOutPath "$INSTDIR"
   File "version.txt"
 
+!ifdef OVIRT
+  File "bin/OVirtGuestService.exe"
+  File "bin/ovirt-guest-agent.ini"
+!endif
+
   SetOutPath "$INSTDIR\32"
   File "bin/vdagent_x86/vdagent.exe"
   File "bin/vdagent_x86/vdservice.exe"
@@ -149,6 +154,10 @@ Section "install"
   Push "PCI\VEN_1AF4&DEV_1000&SUBSYS_00011AF4&REV_00"
   Call InstallDriver
 
+!ifdef OVIRT
+  Call InstallOVirtAgentService
+!endif
+
   Call InstallVdAgentService
 
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}" \
@@ -187,7 +196,11 @@ Section "Uninstall"
   Delete /rebootok "$INSTDIR\64\vdservice.exe"
   RMDir /rebootok "$INSTDIR\64"
   RMDir /rebootok /r "$INSTDIR\drivers"
+!ifdef OVIRT
+  RMDir /rebootok "$INSTDIR\OVirtGuestService.exe"
+!endif
   RMDir /rebootok "$INSTDIR"
+
 
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}"
 SectionEnd
@@ -303,6 +316,10 @@ Function ${un}StopServices
   push "BalloonService"
   Call ${un}StopService
 
+!ifdef OVIRT
+  push "OVirtGuestService"
+  Call ${un}StopService
+!endif
 
 FunctionEnd
 !macroend
@@ -354,6 +371,15 @@ Function InstallVdAgentService
   push "vdservice"
   Call InstallService
 
+FunctionEnd
+
+Function InstallOVirtAgentService
+  StrCpy $0 "$INSTDIR\OVirtGuestService.exe"
+
+  push "OVirt Guest Service"
+  push $0
+  push "OVirtGuestService"
+  Call InstallService
 FunctionEnd
 
 Function InstallBalloonService
