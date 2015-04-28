@@ -126,10 +126,6 @@ Section "Start Menu Shortcuts"
   CreateShortCut "$SMPROGRAMS\spice-guest-tools\Uninstall SPICE Guest Tools.lnk" "$INSTDIR\Uninstall-spice-guest-tools.exe" "" "$INSTDIR\Uninstall-spice-guest-tools.exe" 0
 SectionEnd
 
-Section "Desktop Icons"
-#  CreateShortCut "$DESKTOP\virt-viewer.exe.lnk" "$INSTDIR\bin\virt-viewer.exe" "" "$INSTDIR\bin\virt-viewer.exe" 0
-SectionEnd
-
 Section "Uninstall"
   Delete /rebootok "$SMPROGRAMS\spice-guest-tools\Uninstall SPICE Guest Tools.lnk"
   RMDir "$SMPROGRAMS\spice-guest-tools"
