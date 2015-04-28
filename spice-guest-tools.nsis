@@ -129,6 +129,8 @@ SectionEnd
 Section "Uninstall"
   Call un.StopServices
 
+  SetOutPath "$TEMP"
+
   Delete /rebootok "$SMPROGRAMS\spice-guest-tools\Uninstall SPICE Guest Tools.lnk"
   RMDir "$SMPROGRAMS\spice-guest-tools"
 
