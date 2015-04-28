@@ -123,7 +123,7 @@ SectionEnd
 
 Section "Start Menu Shortcuts"
   CreateDirectory "$SMPROGRAMS\spice-guest-tools"
-  CreateShortCut "$SMPROGRAMS\spice-guest-tools\Uninstall SPICE Guest Tools.lnk" "$INSTDIR\Uninstall-spice-guest-tools.exe" "" "$INSTDIR\Uninstall-spice-guest-tools.exe" 0
+  CreateShortCut "$SMPROGRAMS\spice-guest-tools\Uninstall SPICE Guest Tools.lnk" "$INSTDIR\Uninstall spice-guest-tools.exe" "" "$INSTDIR\Uninstall spice-guest-tools.exe" 0
 SectionEnd
 
 Section "Uninstall"
