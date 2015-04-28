@@ -39,15 +39,17 @@ SetCompressor /SOLID lzma
 !include "WinVer.nsh"
 !include "x64.nsh"
 
+!define FILENAME "spice-guest-tools"
 !define NAME "SPICE Guest Tools"
 !define PUBLISHER "The SPICE Project"
+!define REGKEYNAME "SpiceGuestTools"
 !define URL "http://spice-space.org"
 !define VERSION "0.100"
 Name "${NAME}"
 Caption "${NAME} Installer"
-OutFile "spice-guest-tools-${VERSION}.exe"
-BrandingText " "
+OutFile "${FILENAME}-${VERSION}.exe"
 InstallDir "$PROGRAMFILES\${NAME}"
+BrandingText " "
 
 # SilentInstall silent
 ShowInstDetails nevershow
@@ -126,25 +128,25 @@ Section "spice-guest-tools"
 
   Call InstallVdAgentService
 
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SpiceGuestTools" \
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}" \
                  "DisplayName" "${NAME}"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SpiceGuestTools" \
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}" \
                  "DisplayVersion" "${VERSION}"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SpiceGuestTools" \
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}" \
                  "Publisher" "${PUBLISHER}"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SpiceGuestTools" \
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}" \
                  "URLInfoAbout" "${URL}"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SpiceGuestTools" \
-                 "UninstallString" "$\"$INSTDIR\Uninstall spice-guest-tools.exe$\""
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SpiceGuestTools" \
-                 "QuietUninstallString" "$\"$INSTDIR\Uninstall spice-guest-tools.exe$\" /S"
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SpiceGuestTools" \
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}" \
+                 "UninstallString" "$\"$INSTDIR\Uninstall ${FILENAME}$\""
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}" \
+                 "QuietUninstallString" "$\"$INSTDIR\Uninstall ${FILENAME}$\" /S"
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}" \
                  "NoModify" "1"
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SpiceGuestTools" \
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}" \
                  "NoRepair" "1"
   ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
   IntFmt $0 "0x%08X" $0
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SpiceGuestTools" \
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}" \
                  "EstimatedSize" "$0"
 SectionEnd
 
@@ -154,7 +156,7 @@ Section "Uninstall"
   SetOutPath "$TEMP"
 
   Delete /rebootok "$INSTDIR\version.txt"
-  Delete /rebootok "$INSTDIR\Uninstall spice-guest-tools.exe"
+  Delete /rebootok "$INSTDIR\Uninstall ${FILENAME}.exe"
   Delete /rebootok "$INSTDIR\32\vdagent.exe"
   Delete /rebootok "$INSTDIR\32\vdservice.exe"
   RMDir /rebootok "$INSTDIR\32"
@@ -164,11 +166,11 @@ Section "Uninstall"
   RMDir /rebootok /r "$INSTDIR\drivers"
   RMDir /rebootok "$INSTDIR"
 
-  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SpiceGuestTools"
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}"
 SectionEnd
 
 Section -post
-  WriteUninstaller "$INSTDIR\Uninstall spice-guest-tools.exe"
+  WriteUninstaller "$INSTDIR\Uninstall ${FILENAME}.exe"
 SectionEnd
 
 Function .onInit
