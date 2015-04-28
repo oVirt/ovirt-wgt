@@ -2,7 +2,7 @@
 # @configure_input@
 # To build an installer from the script you would normally do:
 #
-#   makensis spice-guest-tools
+#   makensis spice-guest-tools.nsis
 #
 # which will generate the output file 'spice-guest-tools-$VERSION.exe' which is a Windows
 # installer containing your program.
