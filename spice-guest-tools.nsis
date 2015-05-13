@@ -44,7 +44,7 @@ SetCompressor /SOLID lzma
 !define PUBLISHER "The SPICE Project"
 !define REGKEYNAME "SpiceGuestTools"
 !define URL "http://spice-space.org"
-!define VERSION "0.100"
+!define VERSION "0.103"
 Name "${NAME}"
 Caption "${NAME} Installer"
 OutFile "${FILENAME}-${VERSION}.exe"
@@ -93,18 +93,27 @@ Section "spice-guest-tools"
   File /r drivers/virtio/
   File /r drivers/qxl/
 
+  Push "vioserial"
   Push "vioser"
   Push "PCI\VEN_1AF4&DEV_1003&SUBSYS_00031AF4"
   Call InstallDriver
 
+
+  ${if} ${AtLeastWin8}
+    Push "qxldod"
+  ${else}
+    Push "qxl"
+  ${endif}
   Push "qxl"
   Push "PCI\VEN_1b36&DEV_0100&SUBSYS_11001af4"
   Call InstallDriver
 
+  Push "Balloon"
   Push "balloon"
   Push "PCI\VEN_1AF4&DEV_1002&SUBSYS_00051AF4&REV_00"
   Call InstallBalloonDriver
 
+  Push "viostor"
   Push "viostor"
   Push "PCI\VEN_1AF4&DEV_1001&SUBSYS_00021AF4&REV_00"
   Call InstallDriver
@@ -118,10 +127,12 @@ Section "spice-guest-tools"
   ${OrIf} ${IsWin8.1}
   ${OrIf} ${IsWin2012R2}
     Push "vioscsi"
+    Push "vioscsi"
     Push "PCI\VEN_1AF4&DEV_1004&SUBSYS_00081AF4&REV_00"
     Call InstallDriver
   ${EndIf}
 
+  Push "NetKVM"
   Push "netkvm"
   Push "PCI\VEN_1AF4&DEV_1000&SUBSYS_00011AF4&REV_00"
   Call InstallDriver
@@ -187,26 +198,27 @@ Function .onInit
 FunctionEnd
 
 Function GetDriverSubdir
+   Pop $0
    ${If} ${IsWinXP}
-      StrCpy $0 "winxp"
+      StrCpy $0 "$0\xp"
    ${ElseIf} ${IsWinVista}
-      StrCpy $0 "vista"
+      StrCpy $0 "$0\vista"
    ${ElseIf} ${IsWin2003}
-      StrCpy $0 "win2k3"
+      StrCpy $0 "$0\2k3"
    ${ElseIf} ${IsWin7}
-      StrCpy $0 "win7"
+      StrCpy $0 "$0\w7"
    ${ElseIf} ${IsWin2008}
-      StrCpy $0 "win2k8"
+      StrCpy $0 "$0\w2k8"
    ${ElseIf} ${IsWin2008R2}
-      StrCpy $0 "win2k8r2"
+      StrCpy $0 "$0\w2k8R2"
    ${ElseIf} ${IsWin8}
-      StrCpy $0 "win8"
+      StrCpy $0 "$0\w8"
    ${ElseIf} ${IsWin2012}
-      StrCpy $0 "win2k12"
+      StrCpy $0 "$0\w2k12"
    ${ElseIf} ${IsWin8.1}
-      StrCpy $0 "win8"
+      StrCpy $0 "$0\w8.1"
    ${ElseIf} ${IsWin2012R2}
-      StrCpy $0 "win2k12"
+      StrCpy $0 "$0\w2k12r2"
    ${Else}
       MessageBox MB_ICONEXCLAMATION "Unsupported Windows version"
       Abort ; causes installer to quit.
@@ -231,6 +243,8 @@ FunctionEnd
 Function InstallDriver
   Pop $R0 ; HID
   Pop $R1 ; driver name
+  Pop $R2 ; driver path
+  Push $R2
   Call GetDriverSubdir
   Pop $0
   StrCpy $1 $R1
@@ -331,6 +345,7 @@ Function InstallVdAgentService
 FunctionEnd
 
 Function InstallBalloonService
+  Push "Balloon"
   Call GetDriverSubdir
   Pop $0
   StrCpy $0 "$INSTDIR\drivers\$0\blnsvr.exe"
