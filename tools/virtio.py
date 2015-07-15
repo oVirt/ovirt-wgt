@@ -125,23 +125,26 @@ def copy_drivers(base_src, base_dest, driver_filter=None, copy_debug=False):
 
 
 def download_iso(dest):
-        base_url = "http://alt.fedoraproject.org/pub/alt/virtio-win/latest/images/bin/"
+        base_url = "https://fedorapeople.org/groups/virt/virtio-win/deprecated-isos/latest/"
         try:
                 response = urllib2.urlopen(base_url)
                 html = response.read()
 
                 isos = set(re.findall("virtio-win.*?\.iso", html))
                 if len(isos) != 1:
-                        raise Exception("failure parsing http://alt.fedoraproject.org/pub/alt/virtio-win/latest/images/bin/ for iso name")
+                        raise Exception("failure parsing %s for iso name" % base_url)
 
                 iso_name = isos.pop()
                 iso_path = os.path.join(dest, iso_name)
-                print "Downloading", iso_name, "..."
-                remote_iso = urllib2.urlopen(base_url + iso_name)
-                fd = os.open(iso_path, os.O_WRONLY | os.O_EXCL | os.O_CREAT)
-                local_iso = os.fdopen(fd, "w")
-                shutil.copyfileobj(remote_iso, local_iso)
-                local_iso.close
+                if os.path.exists(iso_path):
+                        print "Iso file %s already found, exiting..." % iso_path
+                else:
+                    print "Downloading", iso_name, "..."
+                    remote_iso = urllib2.urlopen(base_url + iso_name)
+                    fd = os.open(iso_path, os.O_WRONLY | os.O_EXCL | os.O_CREAT)
+                    local_iso = os.fdopen(fd, "w")
+                    shutil.copyfileobj(remote_iso, local_iso)
+                    local_iso.close
                 print iso_name, "successfully downloaded"
 
                 return iso_name

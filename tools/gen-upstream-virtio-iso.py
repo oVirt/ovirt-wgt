@@ -1,11 +1,14 @@
-#/usr/bin/python
+#!/usr/bin/python
 
 import iso
 import os
 import virtio
 
 tempdir = "tmp"
-os.makedirs(tempdir)
+try:
+        os.makedirs(tempdir)
+except OSError as e:
+        print "Failed to create %s: %s" % (tempdir, e)
 mountpoint = os.path.join(tempdir, "mnt")
 drivers_dest = os.path.join(tempdir, "drivers")
 output_iso_name = "drivers.iso"
