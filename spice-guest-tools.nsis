@@ -101,10 +101,11 @@ Section "spice-guest-tools"
 
   ${if} ${AtLeastWin8}
     Push "qxldod"
+    Push "qxldod"
   ${else}
     Push "qxl"
+    Push "qxl"
   ${endif}
-  Push "qxl"
   Push "PCI\VEN_1b36&DEV_0100&SUBSYS_11001af4"
   Call InstallDriver
 
