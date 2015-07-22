@@ -98,6 +98,7 @@ Section "spice-guest-tools"
   Push "PCI\VEN_1AF4&DEV_1003&SUBSYS_00031AF4"
   Call InstallDriver
 
+  Call InstallQemuGuestAgent
 
   ${if} ${AtLeastWin8}
     Push "qxldod"
@@ -164,6 +165,7 @@ SectionEnd
 
 Section "Uninstall"
   Call un.StopServices
+  Call un.UninstallQemuGuestAgent
 
   SetOutPath "$TEMP"
 
@@ -329,6 +331,24 @@ InstallService:
     Return
   ${endif}
   DetailPrint "$R2 service started"
+FunctionEnd
+
+Function InstallQemuGuestAgent
+  ${if} ${RunningX64}
+    StrCpy $0 "$INSTDIR\guest-agent\qemu-ga-x64.msi"
+  ${else}
+    StrCpy $0 "$INSTDIR\guest-agent\qemu-ga-x86.msi"
+  ${endif}
+  ExecWait '"msiexec.exe" /qn /i "$0"'
+FunctionEnd
+
+Function un.UninstallQemuGuestAgent
+  ${if} ${RunningX64}
+    StrCpy $0 "$INSTDIR\guest-agent\qemu-ga-x64.msi"
+  ${else}
+    StrCpy $0 "$INSTDIR\guest-agent\qemu-ga-x86.msi"
+  ${endif}
+  ExecWait '"msiexec.exe" /qn /x "$0"'
 FunctionEnd
 
 Function InstallVdAgentService
