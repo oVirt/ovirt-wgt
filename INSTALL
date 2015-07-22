@@ -1,11 +1,9 @@
-- run 'python ./tools/gen-upstream-virtio-iso.py'
-   -> this will download the latest virtio ISO and 'unpack' it to
-      tmp/drivers
-- rm -rf drivers/virtio && mv tmp/drivers drivers/virtio
-- remove .pdb (debug) files from drivers/virtio
-- put qxl drivers in drivers/qxl/
-- put agent binaries in bin/vdagent_x64 and bin/vdagent_x86 directories
-- run makensis ./spice-guest-tools.nsis
+As described in
+https://alt.fedoraproject.org/pub/alt/virtio-win/latest/deprecated-README
+the virtio-win ISOs have moved to a new location with a different layout,
+which broke the various scripts in tools/.
 
-- don't forget to gather/ship the various sources at the same time!
-
+At this point, manually fetching the latest ISO, and copying the directory
+structure manually to spice-nsis/drivers/ should be enough for the
+nsis script. Make sure you remove the .pdb files, they contain debug
+information and can be quite large, no need to ship them in the installer
