@@ -23,5 +23,5 @@ for dirname, dirs, files in os.walk(dest_dir):
 
 missing = set(source_files.keys()).difference(dest_files)
 
-for md5 in missing:
-        print source_files[md5]
+for md5_hash in missing:
+        print source_files[md5_hash]
