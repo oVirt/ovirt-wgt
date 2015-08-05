@@ -1,4 +1,4 @@
-#/usr/bin/python
+#!/usr/bin/python
 
 import iso
 import sys
@@ -13,3 +13,6 @@ output_iso_name = "ovirt-guest-tools-" + sys.argv[1] + ".iso"
 iso.geniso(isodir, output_iso_name)
 
 print "done"
+
+
+# vim: expandtab tabstop=4 shiftwidth=4

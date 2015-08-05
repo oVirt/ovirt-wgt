@@ -1,4 +1,4 @@
-#/usr/bin/python
+#!/usr/bin/python
 
 import iso
 import os
@@ -32,8 +32,16 @@ iso_name = virtio.download_iso(tempdir)
 iso_path = os.path.join(tempdir, iso_name)
 with iso.IsoMounter(iso_path, mountpoint):
         virtio.copy_drivers(mountpoint, drivers_dest, ('block'))
-shutil.copy(os.path.join("boxes-unattended-win-drivers", "README"), base_dest)
-shutil.copy(os.path.join("boxes-unattended-win-drivers", "txtsetup.oem"),
-os.path.join(drivers_dest, "winxp", "x86"))
+shutil.copy(
+    os.path.join("boxes-unattended-win-drivers", "README"),
+    base_dest
+)
+shutil.copy(
+    os.path.join("boxes-unattended-win-drivers", "txtsetup.oem"),
+    os.path.join(drivers_dest, "winxp", "x86")
+)
 iso.geniso(base_dest, output_iso_name, "Boxes Win Drivers")
 print output_iso_name, "created"
+
+
+# vim: expandtab tabstop=4 shiftwidth=4
