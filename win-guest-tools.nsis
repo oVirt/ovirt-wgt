@@ -2,10 +2,11 @@
 # @configure_input@
 # To build an installer from the script you would normally do:
 #
-#   makensis spice-guest-tools.nsis
+#   makensis -D{SPICE,OVIRT} win-guest-tools.nsis
 #
-# which will generate the output file 'spice-guest-tools-$VERSION.exe' which is a Windows
-# installer containing your program.
+# which will generate the output file 'spice-guest-tools-$VERSION.exe' or
+# 'ovirt-guest-tools-setup.exe' which are Windows
+# installers containing your program.
 #
 #
 #
@@ -39,12 +40,23 @@ SetCompressor /SOLID lzma
 !include "WinVer.nsh"
 !include "x64.nsh"
 
+!ifdef SPICE
 !define FILENAME "spice-guest-tools"
 !define NAME "SPICE Guest Tools"
 !define PUBLISHER "The SPICE Project"
 !define REGKEYNAME "SpiceGuestTools"
 !define URL "http://spice-space.org"
+!else ifdef OVIRT
+!define FILENAME "ovirt-guest-tools-setup"
+!define NAME "oVirt Guest Tools"
+!define PUBLISHER "The oVirt Project"
+!define REGKEYNAME "oVirtGuestTools"
+!define URL "http://www.ovirt.org/Home"
+!else
+!error "OVIRT or SPICE symbol should passed to makensis with the -D flag"
+!endif
 !define VERSION "0.103"
+
 Name "${NAME}"
 Caption "${NAME} Installer"
 OutFile "${FILENAME}-${VERSION}.exe"
@@ -74,7 +86,7 @@ ComponentText "Select which optional components you want to install."
 
 DirText "Please select the installation folder."
 
-Section "spice-guest-tools"
+Section "install"
   SectionIn RO
 
   Call StopServices

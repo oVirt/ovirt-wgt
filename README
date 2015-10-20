@@ -8,7 +8,7 @@ started up/picked up correctly by Windows.
 
 This script needs to have the various binaries/drivers it will install
 available, they are not included in this archive. The various 'File'
-directives in spice-guest-tools.nsis should give you an idea of the
+directives in win-guest-tools.nsis should give you an idea of the
 directory tree the script expects. There are some rough notes about this
 in INSTALL as well.
 
@@ -20,4 +20,4 @@ from http://nsis.sourceforge.net/NSIS_Simple_Service_Plugin . The dll it ships m
 NSIS plugin path, for example /usr/share/nsis/Plugins/ on my Fedora machine.
 
 Once this is installed, all that is needed is to run makensis
-./spice-guest-tools.nsi from your Linux box, and magic will happen!
+./win-guest-tools.nsi from your Linux box, and magic will happen!
