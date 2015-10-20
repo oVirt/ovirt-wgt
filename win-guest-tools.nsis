@@ -97,6 +97,8 @@ Section "install"
 !ifdef OVIRT
   File "bin/OVirtGuestService.exe"
   File "bin/ovirt-guest-agent.ini"
+  File "bin/default.ini"
+  File "bin/default-logger.ini"
 !endif
 
   SetOutPath "$INSTDIR\32"
