@@ -40,6 +40,7 @@ SetCompressor /SOLID lzma
 !include "WinVer.nsh"
 !include "x64.nsh"
 
+
 !ifdef SPICE
 !define FILENAME "spice-guest-tools"
 !define NAME "SPICE Guest Tools"
@@ -55,11 +56,18 @@ SetCompressor /SOLID lzma
 !else
 !error "OVIRT or SPICE symbol should passed to makensis with the -D flag"
 !endif
+
 !define VERSION "0.103"
+!ifndef DISPLAYED_VERSION
+!define DISPLAYED_VERSION "${VERSION}"
+!endif
+!ifndef EXE_VERSION
+!define EXE_VERSION "-${VERSION}"
+!endif
 
 Name "${NAME}"
 Caption "${NAME} Installer"
-OutFile "${FILENAME}-${VERSION}.exe"
+OutFile "${FILENAME}${EXE_VERSION}.exe"
 InstallDir "$PROGRAMFILES\${NAME}"
 BrandingText " "
 
@@ -184,7 +192,7 @@ Section "install"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}" \
                  "DisplayName" "${NAME}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}" \
-                 "DisplayVersion" "${VERSION}"
+                 "DisplayVersion" "${DISPLAYED_VERSION}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}" \
                  "Publisher" "${PUBLISHER}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}" \
