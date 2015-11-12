@@ -113,7 +113,6 @@ Section "install"
 
   SetOutPath "$INSTDIR\drivers"
   File /r drivers/virtio/
-  File /r drivers/qxl/
 
   Push "vioserial"
   Push "vioser"
