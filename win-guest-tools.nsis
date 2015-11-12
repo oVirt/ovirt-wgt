@@ -57,7 +57,10 @@ SetCompressor /SOLID lzma
 !error "OVIRT or SPICE symbol should passed to makensis with the -D flag"
 !endif
 
-!define VERSION "0.103"
+!ifndef VERSION
+!error "-DVERSION=<version> should be passed to makensis, see Makefile"
+!endif
+
 !ifndef DISPLAYED_VERSION
 !define DISPLAYED_VERSION "${VERSION}"
 !endif
