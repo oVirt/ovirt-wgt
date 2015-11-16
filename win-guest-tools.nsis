@@ -61,13 +61,10 @@ SetCompressor /SOLID lzma
 !ifndef DISPLAYED_VERSION
 !define DISPLAYED_VERSION "${VERSION}"
 !endif
-!ifndef EXE_VERSION
-!define EXE_VERSION "-${VERSION}"
-!endif
 
 Name "${NAME}"
 Caption "${NAME} Installer"
-OutFile "${FILENAME}${EXE_VERSION}.exe"
+OutFile "${FILENAME}-${VERSION}.exe"
 InstallDir "$PROGRAMFILES\${NAME}"
 BrandingText " "
 
