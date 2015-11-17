@@ -137,7 +137,7 @@ iso: $(ISO_IMAGE)
 $(ISO_IMAGE): installer
 	mkdir -p "$(ISO_ROOT)"
 	$(RSYNC_AH) "$(INSTALLER)" bin drivers "$(ISO_ROOT)"
-	mkisofs -J -r -lsv -V "$(ISO_LABEL)" -p "$(ISO_P_TEXT)" -publisher "$(ISO_P_TEXT)" -o "$(ISO_IMAGE)" "$(ISO_ROOT)"
+	mkisofs -J -rational-rock -full-iso9660-filenames -verbose -V "$(ISO_LABEL)" -preparer "$(ISO_P_TEXT)" -publisher "$(ISO_P_TEXT)" -o "$(ISO_IMAGE)" "$(ISO_ROOT)"
 
 install: iso
 	mkdir -p "$(DESTDIR)$(INSTALL_DATA_DIR)"
