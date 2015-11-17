@@ -12,16 +12,29 @@ ifeq ($(MODE),SPICE)
 INSTALLER=spice-guest-tools-$(VERSION).exe
 # 'make install' target (in /usr/share)
 INSTALL_NAME=spice-guest-tools-iso
+# ISO image filename
+ISO_IMAGE=SPICE-tools_$(DISPLAYED_VERSION).iso
+# link also to this name which has no version
+ISO_GENERIC=SPICE-tools.iso
+# ISO image preparer and publisher
+ISO_P_TEXT=SPICE project
+# ISO image label/identifier. Limited to 16 chars (with joliet extensions)
+ISO_LABEL=SPICE-WGT-$(DISPLAYED_VERSION)
 else
 ifeq ($(MODE),OVIRT)
 INSTALLER=ovirt-guest-tools-setup-$(VERSION).exe
 INSTALL_NAME=ovirt-guest-tools-iso
+ISO_IMAGE=oVirt-toolsSetup_$(DISPLAYED_VERSION).iso
+ISO_GENERIC=ovirt-tools-setup.iso
+ISO_P_TEXT=oVirt - KVM Virtualization Manager Project (www.ovirt.org)
+ISO_LABEL=oVirt-WGT-$(DISPLAYED_VERSION)
 else
 $(error Please set MODE to one of SPICE or OVIRT, not [$(MODE)])
 endif
 endif
 
 TEMP_DIR=temp_dir
+ISO_ROOT=$(TEMP_DIR)/iso
 
 # common dependencies/sources
 
@@ -61,7 +74,7 @@ DATAROOT_DIR=$(PREFIX)/share
 # install targets
 INSTALL_DATA_DIR=$(DATAROOT_DIR)/$(INSTALL_NAME)
 
-all: copy-files installer
+all: copy-files iso
 
 copy-files: common-files extra-files
 
@@ -118,6 +131,18 @@ extra-files:
 		bin/
 endif
 endif
+
+iso: $(ISO_IMAGE)
+
+$(ISO_IMAGE): installer
+	mkdir -p "$(ISO_ROOT)"
+	$(RSYNC_AH) "$(INSTALLER)" bin drivers "$(ISO_ROOT)"
+	mkisofs -J -r -lsv -V "$(ISO_LABEL)" -p "$(ISO_P_TEXT)" -publisher "$(ISO_P_TEXT)" -o "$(ISO_IMAGE)" "$(ISO_ROOT)"
+
+install: iso
+	mkdir -p "$(DESTDIR)$(INSTALL_DATA_DIR)"
+	$(RSYNC_AH) "$(ISO_IMAGE)" "$(DESTDIR)$(INSTALL_DATA_DIR)"
+	ln -s "$(ISO_IMAGE)" "$(DESTDIR)$(INSTALL_DATA_DIR)/$(ISO_GENERIC)"
 
 clean:
 	rm -rf *.exe bin drivers "$(TEMP_DIR)" "$(ISO_IMAGE)"
