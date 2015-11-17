@@ -13,7 +13,7 @@ INSTALLER=spice-guest-tools-$(VERSION).exe
 # 'make install' target (in /usr/share)
 INSTALL_NAME=spice-guest-tools-iso
 # ISO image filename
-ISO_IMAGE=SPICE-tools_$(DISPLAYED_VERSION).iso
+ISO_IMAGE=SPICE-tools-$(DISPLAYED_VERSION).iso
 # link also to this name which has no version
 ISO_GENERIC=SPICE-tools.iso
 # ISO image preparer and publisher
@@ -34,7 +34,6 @@ endif
 endif
 
 TEMP_DIR=temp_dir
-ISO_ROOT=$(TEMP_DIR)/iso
 
 # common dependencies/sources
 
@@ -135,9 +134,7 @@ endif
 iso: $(ISO_IMAGE)
 
 $(ISO_IMAGE): installer
-	mkdir -p "$(ISO_ROOT)"
-	$(RSYNC_AH) "$(INSTALLER)" bin drivers "$(ISO_ROOT)"
-	mkisofs -J -rational-rock -full-iso9660-filenames -verbose -V "$(ISO_LABEL)" -preparer "$(ISO_P_TEXT)" -publisher "$(ISO_P_TEXT)" -o "$(ISO_IMAGE)" "$(ISO_ROOT)"
+	mkisofs -J -rational-rock -full-iso9660-filenames -verbose -V "$(ISO_LABEL)" -preparer "$(ISO_P_TEXT)" -publisher "$(ISO_P_TEXT)" -o "$(ISO_IMAGE)" bin drivers $(INSTALLER)
 
 install: iso
 	mkdir -p "$(DESTDIR)$(INSTALL_DATA_DIR)"
