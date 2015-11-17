@@ -1,7 +1,7 @@
 NAME=spice-nsis
 VERSION=0.103
 DISPLAYED_VERSION=$(VERSION)
-ARCHIVE=$(NAME)-$(VERSION).tar.gz
+ARCHIVE=$(NAME)-$(VERSION).tar.bz2
 
 # set to OVIRT to build the ovirt guest tools installer
 MODE=SPICE
@@ -158,4 +158,4 @@ GENERATED = \
 	$(NULL)
 
 dist: ovirt-guest-tools-iso.spec
-	git ls-files | tar --files-from /proc/self/fd/0 -czf "$(ARCHIVE)" --owner=root --group=root --transform 's,^,$(NAME)/,' ovirt-guest-tools-iso.spec
+	git ls-files | tar --files-from /dev/stdin -jcf "$(ARCHIVE)" --owner=root --group=root --transform 's,^,$(NAME)-$(VERSION)/,' ovirt-guest-tools-iso.spec
