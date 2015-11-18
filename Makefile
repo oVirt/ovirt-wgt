@@ -142,4 +142,16 @@ install: iso
 	ln -s "$(ISO_IMAGE)" "$(DESTDIR)$(INSTALL_DATA_DIR)/$(ISO_GENERIC)"
 
 clean:
-	rm -rf *.exe bin drivers "$(TEMP_DIR)" "$(ISO_IMAGE)"
+	rm -rf *.exe bin drivers "$(TEMP_DIR)" "$(ISO_IMAGE)" $(GENERATED)
+
+.SUFFIXES:
+.SUFFIXES: .in
+
+.in:
+	sed \
+	-e "s|@VERSION@|$(VERSION)|g" \
+	$< > $@
+
+GENERATED = \
+	ovirt-guest-tools-iso.spec \
+	$(NULL)
