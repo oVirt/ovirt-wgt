@@ -15,6 +15,8 @@ INSTALLER=spice-guest-tools-$(VERSION).exe
 INSTALL_NAME=spice-guest-tools-iso
 # ISO image filename
 ISO_IMAGE=SPICE-tools-$(DISPLAYED_VERSION).iso
+# name of the installer on the ISO
+ISO_INSTALLER_NAME=spice-guest-tools.exe
 # link also to this name which has no version
 ISO_GENERIC=SPICE-tools.iso
 # ISO image preparer and publisher
@@ -26,6 +28,7 @@ ifeq ($(MODE),OVIRT)
 INSTALLER=ovirt-guest-tools-setup-$(VERSION).exe
 INSTALL_NAME=ovirt-guest-tools-iso
 ISO_IMAGE=oVirt-toolsSetup_$(DISPLAYED_VERSION).iso
+ISO_INSTALLER_NAME=ovirt-guest-tools-setup.exe
 ISO_GENERIC=ovirt-tools-setup.iso
 ISO_P_TEXT=oVirt - KVM Virtualization Manager Project (www.ovirt.org)
 ISO_LABEL=oVirt-WGT-$(DISPLAYED_VERSION)
@@ -135,7 +138,7 @@ endif
 iso: $(ISO_IMAGE)
 
 $(ISO_IMAGE): installer
-	mkisofs -J -rational-rock -full-iso9660-filenames -verbose -V "$(ISO_LABEL)" -preparer "$(ISO_P_TEXT)" -publisher "$(ISO_P_TEXT)" -o "$(ISO_IMAGE)" bin drivers $(INSTALLER)
+	mkisofs -J -rational-rock -full-iso9660-filenames -verbose -V "$(ISO_LABEL)" -preparer "$(ISO_P_TEXT)" -publisher "$(ISO_P_TEXT)" -o "$(ISO_IMAGE)" -graft-points bin drivers $(ISO_INSTALLER_NAME)=$(INSTALLER)
 
 install: iso
 	mkdir -p "$(DESTDIR)$(INSTALL_DATA_DIR)"
