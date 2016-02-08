@@ -44,7 +44,8 @@ Windows Guest tools ISO for oVirt Virtualization Manager.
 %global make_common_opts \\\
 	PREFIX=%{_prefix} \\\
 	MODE=OVIRT \\\
-	DISPLAYED_VERSION='%{version}-%{release}'
+	DISPLAYED_VERSION='%{version}-%{release}' \\\
+	ISO_LABEL='oVirt-WGT-%{version}-%{rel}'
 
 %prep
 %setup -n %{source_base} -q
