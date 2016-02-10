@@ -6,10 +6,10 @@
 
 Name:		ovirt-guest-tools-iso
 Version:	3.6
-Release:	%{rel}_master%{?release_suffix}%{?dist}
+Release:	%{rel}%{?dist}
 Summary:	oVirt Windows Guest Tools
 License:	GPLv2 and GPLv2+ and ASL 2.0 and Zlib and MIT and Python and Platform SDK Redistributable EULA and Microsoft DDK Redistributable EULA
-Source:		http://resources.ovirt.org/pub/ovirt-master-snapshot/src/ovirt-wgt/%{source_base}.tar.bz2
+Source:		http://resources.ovirt.org/pub/ovirt-3.6/src/ovirt-wgt/%{source_base}.tar.bz2
 URL:		http://www.ovirt.org/Features/oVirt_Windows_Guest_Tools
 BuildArch:	noarch
 Packager:	Lev Veyde <lveyde@redhat.com>
@@ -60,6 +60,10 @@ make %{make_common_opts} install DESTDIR="%{buildroot}"
 %{_datadir}/%{name}
 
 %changelog
+* Wed Feb 10 2016 Sandro Bonazzola <sbonazzo@redhat.com> - 3.6-3
+- Updated oVirt Guest Agent (1.0.11-2)
+- - Includes VirtIO-Win 0.1-102
+
 * Wed Nov 11 2015 Yedidyah Bar David <didi@redhat.com> 3.6-3
 - merged into upstream git repo spice-nsis
 - separated Makefile out of the spec file
