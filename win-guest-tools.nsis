@@ -109,6 +109,11 @@ Section "install"
   File "bin/default.ini"
   File "bin/default-logger.ini"
 
+  CreateDirectory "$INSTDIR\hooks\after_hibernation"
+  CreateDirectory "$INSTDIR\hooks\before_hibernation"
+  CreateDirectory "$INSTDIR\hooks\after_migration"
+  CreateDirectory "$INSTDIR\hooks\before_migration"
+
   ExecWait "$INSTDIR\vcredist_x86.exe /q"
 !endif
 
@@ -228,6 +233,11 @@ Section "Uninstall"
   RMDir /rebootok /r "$INSTDIR\drivers"
 !ifdef OVIRT
   RMDir /rebootok "$INSTDIR\OVirtGuestService.exe"
+
+  RMDir /rebootok "$INSTDIR\hooks\after_hibernation"
+  RMDir /rebootok "$INSTDIR\hooks\before_hibernation"
+  RMDir /rebootok "$INSTDIR\hooks\after_migration"
+  RMDir /rebootok "$INSTDIR\hooks\before_migration"
 !endif
   RMDir /rebootok "$INSTDIR"
 
