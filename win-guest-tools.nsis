@@ -218,6 +218,7 @@ SectionEnd
 
 Section "Uninstall"
   Call un.StopServices
+  Call un.UninstallServices
   Call un.UninstallQemuGuestAgent
 
   SetOutPath "$TEMP"
@@ -372,6 +373,28 @@ FunctionEnd
 
 !insertmacro StopServices ""
 !insertmacro StopServices "un."
+
+Function un.UninstallService
+  pop $R0
+  SimpleSC::ExistsService $R0
+  Pop $0
+  ${if} $0 == 0
+    SimpleSC::RemoveService $R0
+  ${endif}
+FunctionEnd
+
+Function un.UninstallServices
+  push "vdservice"
+  Call un.UninstallService
+
+  push "BalloonService"
+  Call un.UninstallService
+
+!ifdef OVIRT
+  push "OVirtGuestService"
+  Call un.UninstallService
+!endif
+FunctionEnd
 
 Function InstallService
   pop $R0 #service name
