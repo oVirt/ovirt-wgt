@@ -234,6 +234,11 @@ Section "Uninstall"
 !ifdef OVIRT
   Delete /rebootok "$INSTDIR\OVirtGuestService.exe"
 
+  Delete /rebootok "$INSTDIR\default.ini"
+  Delete /rebootok "$INSTDIR\default-logger.ini"
+  Delete /rebootok "$INSTDIR\ovirt-guest-agent.ini"
+  Delete /rebootok "$INSTDIR\vcredist_x86.exe"
+
   RMDir /rebootok "$INSTDIR\hooks\after_hibernation"
   RMDir /rebootok "$INSTDIR\hooks\before_hibernation"
   RMDir /rebootok "$INSTDIR\hooks\after_migration"
