@@ -232,7 +232,7 @@ Section "Uninstall"
   RMDir /rebootok "$INSTDIR\64"
   RMDir /rebootok /r "$INSTDIR\drivers"
 !ifdef OVIRT
-  RMDir /rebootok "$INSTDIR\OVirtGuestService.exe"
+  Delete /rebootok "$INSTDIR\OVirtGuestService.exe"
 
   RMDir /rebootok "$INSTDIR\hooks\after_hibernation"
   RMDir /rebootok "$INSTDIR\hooks\before_hibernation"
