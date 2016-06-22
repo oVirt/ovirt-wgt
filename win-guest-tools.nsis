@@ -430,18 +430,18 @@ FunctionEnd
 
 Function InstallQemuGuestAgent
   ${if} ${RunningX64}
-    StrCpy $0 "$INSTDIR\guest-agent\qemu-ga-x64.msi"
+    StrCpy $0 "$INSTDIR\drivers\guest-agent\qemu-ga-x64.msi"
   ${else}
-    StrCpy $0 "$INSTDIR\guest-agent\qemu-ga-x86.msi"
+    StrCpy $0 "$INSTDIR\drivers\guest-agent\qemu-ga-x86.msi"
   ${endif}
   ExecWait '"msiexec.exe" /qn /i "$0"'
 FunctionEnd
 
 Function un.UninstallQemuGuestAgent
   ${if} ${RunningX64}
-    StrCpy $0 "$INSTDIR\guest-agent\qemu-ga-x64.msi"
+    StrCpy $0 "$INSTDIR\drivers\guest-agent\qemu-ga-x64.msi"
   ${else}
-    StrCpy $0 "$INSTDIR\guest-agent\qemu-ga-x86.msi"
+    StrCpy $0 "$INSTDIR\drivers\guest-agent\qemu-ga-x86.msi"
   ${endif}
   ExecWait '"msiexec.exe" /qn /x "$0"'
 FunctionEnd
