@@ -243,6 +243,7 @@ Section "Uninstall"
   RMDir /rebootok "$INSTDIR\hooks\before_hibernation"
   RMDir /rebootok "$INSTDIR\hooks\after_migration"
   RMDir /rebootok "$INSTDIR\hooks\before_migration"
+  RMDir /rebootok "$INSTDIR\hooks"
 !endif
   RMDir /rebootok "$INSTDIR"
 
