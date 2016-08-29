@@ -195,7 +195,7 @@ Section "install"
   Call InstallVdAgentService
 
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}" \
-                 "DisplayName" "${NAME}"
+                 "DisplayName" "${NAME} ${DISPLAYED_VERSION}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}" \
                  "DisplayVersion" "${DISPLAYED_VERSION}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${REGKEYNAME}" \
