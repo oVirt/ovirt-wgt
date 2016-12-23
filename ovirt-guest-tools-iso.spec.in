@@ -24,9 +24,9 @@ BuildRequires:	p7zip
 BuildRequires:	p7zip-plugins
 BuildRequires:	hardlink
 
-# From http://www.spice-space.org/download/windows/vdagent/vdagent-win-0.7.3/
-BuildRequires:	mingw32-spice-vdagent >= 0.7.3
-BuildRequires:	mingw64-spice-vdagent >= 0.7.3
+# From http://www.spice-space.org/download/windows/vdagent/vdagent-win-0.8.0/
+BuildRequires:	mingw32-spice-vdagent >= 0.8.0
+BuildRequires:	mingw64-spice-vdagent >= 0.8.0
 
 # From http://resources.ovirt.org/pub
 BuildRequires:	ovirt-guest-agent-windows
