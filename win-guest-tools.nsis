@@ -154,14 +154,7 @@ Section "install"
   Push "PCI\VEN_1AF4&DEV_1001&SUBSYS_00021AF4&REV_00"
   Call InstallDriver
 
-  ${If}  ${IsWinVista}
-  ${OrIf} ${IsWin2008}
-  ${OrIf} ${IsWin7}
-  ${OrIf} ${IsWin2008R2}
-  ${OrIf} ${IsWin8}
-  ${OrIf} ${IsWin2012}
-  ${OrIf} ${IsWin8.1}
-  ${OrIf} ${IsWin2012R2}
+  ${If} ${AtLeastWinVista}
     Push "vioscsi"
     Push "vioscsi"
     Push "PCI\VEN_1AF4&DEV_1004&SUBSYS_00081AF4&REV_00"
@@ -291,6 +284,8 @@ Function GetDriverSubdir
       StrCpy $0 "$0\w8.1"
    ${ElseIf} ${IsWin2012R2}
       StrCpy $0 "$0\w2k12r2"
+   ${ElseIf} ${IsWin10}
+      StrCpy $0 "$0\w10"
    ${Else}
       MessageBox MB_ICONEXCLAMATION "Unsupported Windows version"
       Abort ; causes installer to quit.

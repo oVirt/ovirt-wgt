@@ -16,7 +16,7 @@ Packager:	Lev Veyde <lveyde@redhat.com>
 
 BuildRequires:	genisoimage
 BuildRequires:	rsync
-BuildRequires:	mingw32-nsis >= 2.46
+BuildRequires:	mingw32-nsis >= 3.01
 
 # Drop these when virtio-win includes the drivers not inside an iso.
 # See comment in Makefile.
@@ -31,7 +31,7 @@ BuildRequires:	mingw64-spice-vdagent >= 0.7.3
 # From http://resources.ovirt.org/pub
 BuildRequires:	ovirt-guest-agent-windows
 BuildRequires:	vcredist-x86
-BuildRequires:	nsis-simple-service-plugin
+BuildRequires:	nsis-simple-service-plugin >= 1.30-2
 
 # From https://fedoraproject.org/wiki/Windows_Virtio_Drivers#Yum.7CDnf_Repo
 BuildRequires:	virtio-win
