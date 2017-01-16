@@ -188,6 +188,21 @@ Section "install"
   Push "PCI\VEN_1AF4&DEV_1000&SUBSYS_00011AF4&REV_00"
   Call InstallDriver
 
+  # Install rng driver
+  ${If}  ${IsWinVista}
+  ${OrIf} ${IsWin2008}
+  ${OrIf} ${IsWin7}
+  ${OrIf} ${IsWin2008R2}
+  ${OrIf} ${IsWin8}
+  ${OrIf} ${IsWin2012}
+  ${OrIf} ${IsWin8.1}
+  ${OrIf} ${IsWin2012R2}
+    Push "viorng"
+    Push "viorng"
+    Push "PCI\VEN_1AF4&DEV_1002"
+    Call InstallDriver
+  ${EndIf}
+
 !ifdef OVIRT
   Call InstallOVirtAgentService
 !endif
