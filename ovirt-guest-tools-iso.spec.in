@@ -1,12 +1,12 @@
 # Up to two digits, to fit in the iso label
-%global rel 2
+%global rel 3
 
 %global spice_nsis_version @VERSION@
 %global source_base spice-nsis-%{spice_nsis_version}
 
 Name:		ovirt-guest-tools-iso
 Version:	4.1
-Release:	%{rel}_master%{?release_suffix}%{?dist}
+Release:	%{rel}%{?dist}
 Summary:	oVirt Windows Guest Tools
 License:	GPLv2 and GPLv2+ and ASL 2.0 and Zlib and MIT and Python and Platform SDK Redistributable EULA and Microsoft DDK Redistributable EULA
 Source:		http://resources.ovirt.org/pub/ovirt-master-snapshot/src/ovirt-wgt/%{source_base}.tar.bz2
@@ -60,6 +60,9 @@ make %{make_common_opts} install DESTDIR="%{buildroot}"
 %{_datadir}/%{name}
 
 %changelog
+* Thu Jan 26 2017 Yedidyah Bar David <didi@redhat.com> - 4.1-3
+- Fix driver path for win2k*
+
 * Tue Jan 24 2017 Yedidyah Bar David <didi@redhat.com> - 4.1-1
 - Uninstall fixes
 - Correct path to QEMU GA MSI files
