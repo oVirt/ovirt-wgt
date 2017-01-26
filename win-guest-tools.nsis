@@ -281,17 +281,17 @@ Function GetDriverSubdir
    ${ElseIf} ${IsWin7}
       StrCpy $0 "$0\w7"
    ${ElseIf} ${IsWin2008}
-      StrCpy $0 "$0\w2k8"
+      StrCpy $0 "$0\2k8"
    ${ElseIf} ${IsWin2008R2}
-      StrCpy $0 "$0\w2k8R2"
+      StrCpy $0 "$0\2k8R2"
    ${ElseIf} ${IsWin8}
       StrCpy $0 "$0\w8"
    ${ElseIf} ${IsWin2012}
-      StrCpy $0 "$0\w2k12"
+      StrCpy $0 "$0\2k12"
    ${ElseIf} ${IsWin8.1}
       StrCpy $0 "$0\w8.1"
    ${ElseIf} ${IsWin2012R2}
-      StrCpy $0 "$0\w2k12r2"
+      StrCpy $0 "$0\2k12r2"
    ${ElseIf} ${IsWin10}
       StrCpy $0 "$0\w10"
    ${Else}
