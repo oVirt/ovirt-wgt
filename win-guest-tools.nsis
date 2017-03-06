@@ -10,8 +10,8 @@
 #
 #
 #
-# Copyright (c) 2012-2015 Red Hat, Inc
-# Copyright (c) 2014 Lev Veyde <lveyde@gmail.com>
+# Copyright (c) 2012-2017 Red Hat, Inc
+# Copyright (c) 2017 Lev Veyde <lveyde@redhat.com>
 # Copyright (c) 2012 Grant Williamson <grant.williamson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -294,6 +294,8 @@ Function GetDriverSubdir
       StrCpy $0 "$0\2k12r2"
    ${ElseIf} ${IsWin10}
       StrCpy $0 "$0\w10"
+   ${ElseIf} ${IsWin2016}
+      StrCpy $0 "$0\2k16"
    ${Else}
       MessageBox MB_ICONEXCLAMATION "Unsupported Windows version"
       Abort ; causes installer to quit.
