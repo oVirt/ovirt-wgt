@@ -1,12 +1,12 @@
 # Up to two digits, to fit in the iso label
-%global rel 5
+%global rel 6
 
 %global spice_nsis_version @VERSION@
 %global source_base spice-nsis-%{spice_nsis_version}
 
 Name:		ovirt-guest-tools-iso
 Version:	4.1
-Release:	%{rel}%{?dist}
+Release:	%{rel}_master%{?release_suffix}%{?dist}
 Summary:	oVirt Windows Guest Tools
 License:	GPLv2 and GPLv2+ and ASL 2.0 and Zlib and MIT and Python and Platform SDK Redistributable EULA and Microsoft DDK Redistributable EULA
 Source:		http://resources.ovirt.org/pub/ovirt-master-snapshot/src/ovirt-wgt/%{source_base}.tar.bz2
