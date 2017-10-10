@@ -1,0 +1,15 @@
+make
+mingw32-nsis
+mingw32-spice-vdagent
+mingw64-spice-vdagent
+ovirt-guest-agent-windows
+vcredist-x86
+virtio-win
+nsis-simple-service-plugin
+git
+genisoimage
+rsync
+hardlink
+p7zip
+p7zip-plugins
+yum-utils
