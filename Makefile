@@ -3,6 +3,8 @@ VERSION=0.126
 DISPLAYED_VERSION=$(VERSION)
 ARCHIVE=$(NAME)-$(VERSION).tar.bz2
 
+RELEASE_SUFFIX=_master
+
 # set to OVIRT to build the ovirt guest tools installer
 MODE=SPICE
 
@@ -154,10 +156,12 @@ clean:
 .in:
 	sed \
 	-e "s|@VERSION@|$(VERSION)|g" \
+	-e "s|@RELEASE_SUFFIX@|$(RELEASE_SUFFIX)|g" \
 	$< > $@
 
 GENERATED = \
 	ovirt-guest-tools-iso.spec \
+	automation/config.sh \
 	$(NULL)
 
 dist: $(GENERATED)
