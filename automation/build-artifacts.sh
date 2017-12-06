@@ -12,6 +12,8 @@ rpmbuild \
     -D "_topdir $PWD/tmp.repos" \
     -ta *.tar.bz2
 
+mv *.tar.bz2 exported-artifacts
+
 find \
     "$PWD/tmp.repos" \
     -iname \*.rpm \
