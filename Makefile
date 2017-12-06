@@ -160,5 +160,5 @@ GENERATED = \
 	ovirt-guest-tools-iso.spec \
 	$(NULL)
 
-dist: ovirt-guest-tools-iso.spec
-	git ls-files | tar --files-from /dev/stdin -jcf "$(ARCHIVE)" --owner=root --group=root --transform 's,^,$(NAME)-$(VERSION)/,' ovirt-guest-tools-iso.spec
+dist: $(GENERATED)
+	git ls-files | tar --files-from /dev/stdin -jcf "$(ARCHIVE)" --owner=root --group=root --transform 's,^,$(NAME)-$(VERSION)/,S' $(GENERATED)
