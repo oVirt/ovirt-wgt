@@ -1,5 +1,5 @@
 # Up to two digits, to fit in the iso label
-%global rel 0
+%global rel 1
 
 %global spice_nsis_version @VERSION@
 %global source_base spice-nsis-%{spice_nsis_version}
@@ -60,6 +60,27 @@ make %{make_common_opts} install DESTDIR="%{buildroot}"
 %{_datadir}/%{name}
 
 %changelog
+* Wed Dec 06 2017 - Yedidyah Bar David <didi@redhat.com> - 4.2-1
+- packaging: Handle release suffix
+- automation: export also tarball
+- packaging: make dist: Fix symlinks
+- automation: add standard ci support
+- Add support to the installer for Microsoft Windows Server 2016
+- Add support for Microsoft Windows Server 2016
+- Re-introduce WinVer.nsh
+- Fix driver path for win2k*
+- packaging: bump version to 4.2
+- Merge branch 'virtio-rng' into 'master'
+- Install virtio-rng driver
+- Update to latest virtio-win/vdagent releases
+- Add Windows 10 support
+- Add Display Version as a postfix to the Display Name.
+- Correct path to QEMU GA MSI files
+- ovirt: Add service removal
+- ovirt: Add missing removal of hooks base directory
+- ovirt: Remove all files install by the ovirt-guest-agent
+- OVirtGuestService.exe is a File not a Directory to remove
+
 * Tue Jan 24 2017 Yedidyah Bar David <didi@redhat.com> - 4.2-0
 - Bumping version to 4.2
 
