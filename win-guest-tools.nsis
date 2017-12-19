@@ -114,7 +114,7 @@ Section "install"
   CreateDirectory "$INSTDIR\hooks\after_migration"
   CreateDirectory "$INSTDIR\hooks\before_migration"
 
-  ExecWait "$INSTDIR\vcredist_x86.exe /q"
+  ExecWait '"$INSTDIR\vcredist_x86.exe" /q'
 !endif
 
   SetOutPath "$INSTDIR\32"
@@ -414,7 +414,7 @@ Function InstallService
   ${endif}
 
   DetailPrint "Installing $R2 service"
-  SimpleSC::InstallService $R0 $R2 16 2 $R1 "" "" ""
+  SimpleSC::InstallService $R0 $R2 16 2 '"$R1"' "" "" ""
   Pop $0
   ${if} $0 != 0
     DetailPrint "Failed to install $R2 service: $0"
