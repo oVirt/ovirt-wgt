@@ -125,7 +125,7 @@ Section "install"
   File "bin/vdagent_x64/vdservice.exe"
 
   SetOutPath "$INSTDIR\drivers"
-  File /r drivers/virtio/
+  File /r /x *.pdb drivers/virtio/
 
   Push "vioserial"
   Push "vioser"
