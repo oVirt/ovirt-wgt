@@ -1,5 +1,5 @@
 # Up to two digits, to fit in the iso label
-%global rel 3
+%global rel 4
 
 %global spice_nsis_version @VERSION@
 %global source_base spice-nsis-%{spice_nsis_version}
