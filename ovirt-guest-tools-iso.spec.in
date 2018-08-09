@@ -1,5 +1,5 @@
 # Up to two digits, to fit in the iso label
-%global rel 2
+%global rel 3
 
 %global spice_nsis_version @VERSION@
 %global source_base spice-nsis-%{spice_nsis_version}
@@ -60,6 +60,11 @@ make %{make_common_opts} install DESTDIR="%{buildroot}"
 %{_datadir}/%{name}
 
 %changelog
+* Thu Aug 09 2018 - Sandro Bonazzola <sbonazzo@redhat.com> - 4.2-3
+- Update to virtio-win 0.141
+- Do not install .pdb debug files on the target system
+- Properly quote path to service binaries (BZ#1609779)
+
 * Wed Dec 06 2017 - Yedidyah Bar David <didi@redhat.com> - 4.2-1
 - packaging: Handle release suffix
 - automation: export also tarball
