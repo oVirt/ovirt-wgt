@@ -9,10 +9,10 @@ Version:	4.2
 Release:	%{rel}%{?release_suffix}%{?dist}
 Summary:	oVirt Windows Guest Tools
 License:	GPLv2 and GPLv2+ and ASL 2.0 and Zlib and MIT and Python and Platform SDK Redistributable EULA and Microsoft DDK Redistributable EULA
-Source:		http://resources.ovirt.org/pub/ovirt-master-snapshot/src/ovirt-wgt/%{source_base}.tar.bz2
-URL:		http://www.ovirt.org/Features/oVirt_Windows_Guest_Tools
+Source0:	https://resources.ovirt.org/pub/ovirt-master-snapshot/src/ovirt-wgt/%{source_base}.tar.bz2
+URL:		https://www.ovirt.org/develop/release-management/features/integration/windows-guest-tools/
 BuildArch:	noarch
-Packager:	Lev Veyde <lveyde@redhat.com>
+
 
 BuildRequires:	genisoimage
 BuildRequires:	rsync
