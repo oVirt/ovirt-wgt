@@ -133,6 +133,7 @@ extra-files:
 		"$(OVIRTGA)/default-logger.ini" \
 		"$(OVIRTGA)/ovirt-guest-agent.ini" \
 		"$(VCREDIST)" \
+		"linux" \
 		bin/
 endif
 endif
