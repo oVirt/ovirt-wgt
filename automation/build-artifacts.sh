@@ -22,7 +22,7 @@ mv *.tar.bz2 exported-artifacts
 
 find \
     "$PWD/tmp.repos" \
-    -iname \*.rpm \
+    -iname ovirt-guest-tools\*.rpm \
     -exec mv {} exported-artifacts/ \;
 
 find \
