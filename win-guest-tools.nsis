@@ -87,6 +87,8 @@ ShowInstDetails nevershow
 
 !insertmacro MUI_LANGUAGE "English"
 
+!include "DumpLog.nsh"
+
 XPStyle on
 RequestExecutionLevel admin
 
@@ -263,6 +265,11 @@ SectionEnd
 
 Section -post
   WriteUninstaller "$INSTDIR\Uninstall ${FILENAME}.exe"
+  # for reference: https://stackoverflow.com/questions/2407509/writing-current-date-time-as-file-name-using-nsis
+  !define /date MyTIMESTAMP "%Y-%m-%d-%H-%M-%S"
+  StrCpy $0 "$INSTDIR\install-${MyTIMESTAMP}.log"
+  Push $0
+  Call DumpLog
 SectionEnd
 
 Function .onInit
