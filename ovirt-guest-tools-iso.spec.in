@@ -24,17 +24,17 @@ BuildRequires:	p7zip
 BuildRequires:	p7zip-plugins
 BuildRequires:	hardlink
 
-# From http://www.spice-space.org/download/windows/vdagent/vdagent-win-0.8.0/
-BuildRequires:	mingw32-spice-vdagent >= 0.8.0
-BuildRequires:	mingw64-spice-vdagent >= 0.8.0
+# From http://www.spice-space.org/download/windows/vdagent/vdagent-win-0.9.0/
+BuildRequires:	mingw32-spice-vdagent >= 0.9.0
+BuildRequires:	mingw64-spice-vdagent >= 0.9.0
 
 # From http://resources.ovirt.org/pub
 BuildRequires:	ovirt-guest-agent-windows
 BuildRequires:	vcredist-x86
 BuildRequires:	nsis-simple-service-plugin >= 1.30-2
 
-# From https://fedoraproject.org/wiki/Windows_Virtio_Drivers#Yum.7CDnf_Repo
-BuildRequires:	virtio-win
+# From https://docs.fedoraproject.org/en-US/quick-docs/creating-windows-virtual-machines-using-virtio-drivers/index.html#installing-virtio-win-repo
+BuildRequires:	virtio-win >= 0.1.160
 
 Obsoletes:	ovirt-guest-tools
 
