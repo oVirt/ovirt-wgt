@@ -23,7 +23,7 @@
 #
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -186,6 +186,14 @@ Section "install"
     Push "viorng"
     Push "viorng"
     Push "PCI\VEN_1AF4&DEV_1005"
+    Call InstallDriver
+  ${EndIf}
+
+  # Install Q35 smbus driver
+  ${If} ${IsWin2008}
+    Push "smbus"
+    Push "smbus"
+    Push "PCI\VEN_8086&DEV_2930&SUBSYS_11001AF4"
     Call InstallDriver
   ${EndIf}
 
