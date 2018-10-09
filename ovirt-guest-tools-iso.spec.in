@@ -60,6 +60,10 @@ make %{make_common_opts} install DESTDIR="%{buildroot}"
 %{_datadir}/%{name}
 
 %changelog
+* Tue Oct 09 2018 - Sandro Bonazzola <sbonazzo@redhat.com> - 4.2-4
+- Update to virtio-win 0.1.160
+- add linux qemu-guest-agent packages
+
 * Thu Aug 09 2018 - Sandro Bonazzola <sbonazzo@redhat.com> - 4.2-3
 - Update to virtio-win 0.141
 - Do not install .pdb debug files on the target system
