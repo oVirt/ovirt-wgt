@@ -199,6 +199,15 @@ Section "install"
     Call InstallDriver
   ${EndIf}
 
+  # Install Q35 qemufwcfg driver
+  ${If} ${IsWin10}
+  ${OrIf} ${IsWin2016}
+    Push "qemufwcfg"
+    Push "qemufwcfg"
+    Push "ACPI\QEMU0002"
+    Call InstallDriver
+  ${EndIf}
+
 !ifdef OVIRT
   Call InstallOVirtAgentService
 !endif
