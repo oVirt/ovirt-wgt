@@ -1,5 +1,5 @@
 # Up to two digits, to fit in the iso label
-%global rel 0
+%global rel 1
 
 %global spice_nsis_version @VERSION@
 %global source_base spice-nsis-%{spice_nsis_version}
@@ -60,6 +60,10 @@ make %{make_common_opts} install DESTDIR="%{buildroot}"
 %{_datadir}/%{name}
 
 %changelog
+* Fri Jan 18 2019 - Sandro Bonazzola <sbonazzo@redhat.com> - 4.3-1
+- Added smbus driver (BZ#1578782)
+- Added qemufwcfg driver (BZ#1578775)
+
 * Fri Nov 23 2018 - Yedidyah Bar David <didi@redhat.com> - 4.3-0
 - Bumping version to 4.3
 
