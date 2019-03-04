@@ -1,5 +1,5 @@
 # Up to two digits, to fit in the iso label
-%global rel 1
+%global rel 2
 
 %global spice_nsis_version @VERSION@
 %global source_base spice-nsis-%{spice_nsis_version}
@@ -60,6 +60,9 @@ make %{make_common_opts} install DESTDIR="%{buildroot}"
 %{_datadir}/%{name}
 
 %changelog
+* Tue Mar 05 2019 - Gal Zaidman <gzaidman@redhat.com> - 4.3-2
+- Update to ovirt-guest-agent-1.0.16
+
 * Fri Jan 18 2019 - Sandro Bonazzola <sbonazzo@redhat.com> - 4.3-1
 - Added smbus driver (BZ#1578782)
 - Added qemufwcfg driver (BZ#1578775)
