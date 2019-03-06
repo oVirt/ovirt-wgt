@@ -1,11 +1,11 @@
 # Up to two digits, to fit in the iso label
-%global rel 2
+%global rel 0
 
 %global spice_nsis_version @VERSION@
 %global source_base spice-nsis-%{spice_nsis_version}
 
 Name:		ovirt-guest-tools-iso
-Version:	4.3
+Version:	4.4
 Release:	%{rel}%{?release_suffix}%{?dist}
 Summary:	oVirt Windows Guest Tools
 License:	GPLv2 and GPLv2+ and ASL 2.0 and Zlib and MIT and Python and Platform SDK Redistributable EULA and Microsoft DDK Redistributable EULA
@@ -60,6 +60,9 @@ make %{make_common_opts} install DESTDIR="%{buildroot}"
 %{_datadir}/%{name}
 
 %changelog
+* Wed Mar 06 2019 - Sandro Bonazzola <sbonazzo@redhat.com> - 4.4-0
+- Bumping version to 4.4
+
 * Tue Mar 05 2019 - Gal Zaidman <gzaidman@redhat.com> - 4.3-2
 - Update to ovirt-guest-agent-1.0.16
 
