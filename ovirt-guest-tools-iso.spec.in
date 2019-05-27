@@ -1,5 +1,5 @@
 # Up to two digits, to fit in the iso label
-%global rel 2
+%global rel 3
 
 %global spice_nsis_version @VERSION@
 %global source_base spice-nsis-%{spice_nsis_version}
@@ -34,7 +34,7 @@ BuildRequires:	vcredist-x86
 BuildRequires:	nsis-simple-service-plugin >= 1.30-2
 
 # From https://docs.fedoraproject.org/en-US/quick-docs/creating-windows-virtual-machines-using-virtio-drivers/index.html#installing-virtio-win-repo
-BuildRequires:	virtio-win >= 0.1.160
+BuildRequires:	virtio-win >= 0.1.171
 
 Obsoletes:	ovirt-guest-tools
 
@@ -60,6 +60,9 @@ make %{make_common_opts} install DESTDIR="%{buildroot}"
 %{_datadir}/%{name}
 
 %changelog
+* Wed Mar 06 2019 - Sandro Bonazzola <sbonazzo@redhat.com> - 4.3-3
+- Rebase on virtio-win 0.171
+
 * Tue Mar 05 2019 - Gal Zaidman <gzaidman@redhat.com> - 4.3-2
 - Update to ovirt-guest-agent-1.0.16
 
