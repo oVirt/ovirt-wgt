@@ -1,5 +1,5 @@
 NAME=spice-nsis
-VERSION=0.164
+VERSION=0.171
 DISPLAYED_VERSION=$(VERSION)
 ARCHIVE=$(NAME)-$(VERSION).tar.bz2
 
@@ -43,7 +43,7 @@ TEMP_DIR=temp_dir
 
 # common dependencies/sources
 
-# From RPMs available at http://www.spice-space.org/download/windows/vdagent/vdagent-win-0.8.0/
+# From RPMs available at https://www.spice-space.org/download/windows/vdagent/vdagent-win-0.9.0/
 VDA32BIN=/usr/i686-w64-mingw32/sys-root/mingw/bin
 VDA64BIN=/usr/x86_64-w64-mingw32/sys-root/mingw/bin
 
